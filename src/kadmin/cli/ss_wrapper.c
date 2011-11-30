@@ -40,6 +40,7 @@ main(int argc, char *argv[])
     int sci_idx, code = 0;
 
     setlocale(LC_MESSAGES, "");
+    setlocale(LC_TIME, "");
     whoami = ((whoami = strrchr(argv[0], '/')) ? whoami+1 : argv[0]);
 
     request = kadmin_startup(argc, argv);

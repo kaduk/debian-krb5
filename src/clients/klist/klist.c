@@ -119,6 +119,7 @@ main(argc, argv)
     int mode;
 
     setlocale(LC_MESSAGES, "");
+    setlocale(LC_TIME, "");
     progname = GET_PROGNAME(argv[0]);
 
     name = NULL;
