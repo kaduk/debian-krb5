@@ -33,6 +33,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#ifndef MAXPATHLEN
+# define MAXPATHLEN 4096
+#endif
+
 /*
  * Free a kt_list
  */

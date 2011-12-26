@@ -280,4 +280,8 @@ void	 __dbpanic __P((DB *dbp));
 #ifndef O_BINARY
 #define O_BINARY	0		/* Needed for Win32 compiles */
 #endif
+
+#ifndef MAXPATHLEN
+# define MAXPATHLEN 4096
+#endif
 #endif /* _DB_INT_H_ */

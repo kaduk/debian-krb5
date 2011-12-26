@@ -60,6 +60,10 @@ maybe_use_reverse_dns (krb5_context context, int defalt)
 }
 
 
+#ifndef MAXHOSTNAMELEN
+# define MAXHOSTNAMELEN 256
+#endif
+
 krb5_error_code KRB5_CALLCONV
 krb5_sname_to_principal(krb5_context context, const char *hostname, const char *sname, krb5_int32 type, krb5_principal *ret_princ)
 {
