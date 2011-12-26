@@ -111,7 +111,7 @@ and for which the appropriate principals are in its keytab.
 specifies that the master database password should be fetched from the
 keyboard rather than from a file on disk.  Note that the server gets the
 password prior to putting itself in the background; in combination with
-the -nofork option, you must place it in the background by hand.
+the \-nofork option, you must place it in the background by hand.
 .TP
 .B \-nofork
 specifies that the server does not put itself in the background and does

@@ -70,7 +70,7 @@ must be followed immediately by one of the following delimiters:
 .in -.3i
 .fi
 .sp
-as in "kinit -l 90m".  You cannot mix units; a value of `3h30m' will
+as in "kinit \-l 90m".  You cannot mix units; a value of `3h30m' will
 result in an error.
 .sp
 If the

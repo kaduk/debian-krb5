@@ -26,37 +26,38 @@
 krb5-config \- tool for linking against MIT Kerberos libraries
 .SH SYNOPSIS
 .B krb5-config
-[ \fB--help\fP | \fB--all\fP | \fB--version\fP | \fB--vendor\fP | \fB--prefix\fP | 
-\fB--exec-prefix\fP | \fB--cflags\fP | \fB--libs\fP libraries ]
+[ \fB\-\-help\fP | \fB\-\-all\fP | \fB\-\-version\fP | \fB\-\-vendor\fP
+| \fB\-\-prefix\fP | \fB\-\-exec\-prefix\fP | \fB\-\-cflags\fP
+| \fB\-\-libs\fP libraries ]
 .br
 .SH DESCRIPTION
-.I krb5-config
+.I krb5\-config
 tells the application programmer what special flags to use to compile
 and link programs against the installed Kerberos libraries.
 .SH OPTIONS
 .TP
-\fB\--help\fP
+\fB\-\-help\fP
 print usage message.  This is the default.
 .TP
-\fB\--all\fP
+\fB\-\-all\fP
 prints version, vendor, prefix and exec-prefix.
 .TP
-\fB\--version\fP
+\fB\-\-version\fP
 prints the version of the installed Kerberos implementation.
 .TP
-\fB\--vendor\fP
+\fB\-\-vendor\fP
 prints the vendor of the installed Kerberos implementation.
 .TP
-\fB\--prefix\fP 
+\fB\-\-prefix\fP 
 prints the prefix with which Kerberos was built.
 .TP
-\fB\--exec-prefix\fP 
+\fB\-\-exec\-prefix\fP 
 prints the exec-prefix with which Kerberos was built.
 .TP
-\fB\--cflags\fP 
+\fB\-\-cflags\fP 
 prints the compiler flags with which Kerberos was built.
 .TP
-\fB\--libs\fP \fIlibraries\fP 
+\fB\-\-libs\fP \fIlibraries\fP 
 list compiler options required to link with \fIlibraries\fP.  Possible 
 values for \fIlibraries\fP are:
 .sp
