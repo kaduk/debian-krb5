@@ -24,7 +24,7 @@
 #include "gssapiP_krb5.h"
 
 /*
- * $Id$
+ * $Id: get_tkt_flags.c 24533 2010-11-25 20:28:30Z ghudson $
  */
 
 OM_uint32

@@ -2,7 +2,7 @@
 /*
  * Copyright 1993 OpenVision Technologies, Inc., All Rights Reserved.
  *
- * $Id$
+ * $Id: keytab.c 25141 2011-09-04 23:52:11Z raeburn $
  * $Source$
  */
 

@@ -24,7 +24,7 @@
 #include "gssapiP_krb5.h"
 
 /*
- * $Id$
+ * $Id: context_time.c 25116 2011-08-29 17:20:37Z ghudson $
  */
 
 OM_uint32 KRB5_CALLCONV

@@ -26,7 +26,7 @@
 #include <stdio.h>
 
 /*
- * $Id$
+ * $Id: disp_major_status.c 24968 2011-06-13 21:44:51Z ghudson $
  */
 
 /* This code has knowledge of the min and max errors of each type

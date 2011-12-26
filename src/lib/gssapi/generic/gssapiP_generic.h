@@ -25,7 +25,7 @@
 #define _GSSAPIP_GENERIC_H_
 
 /*
- * $Id$
+ * $Id: gssapiP_generic.h 25331 2011-10-14 14:40:05Z hartmans $
  */
 
 #if defined(_WIN32)

@@ -53,5 +53,5 @@
 #define KRB5_MINOR_RELEASE 10
 #define KRB5_PATCHLEVEL 0
 #define KRB5_RELTAIL "alpha2"
-/* #undef KRB5_RELDATE */
+#define KRB5_RELDATE "20111219"
 #define KRB5_RELTAG "tags/krb5-1-10-alpha2"

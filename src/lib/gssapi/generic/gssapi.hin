@@ -63,7 +63,7 @@ extern "C" {
 #include <sys/types.h>
 
 /*
- * $Id$
+ * $Id: gssapi.hin 24436 2010-10-06 18:25:04Z ghudson $
  */
 
 /*

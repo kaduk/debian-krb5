@@ -22,7 +22,7 @@
  */
 
 /*
- * $Id$
+ * $Id: compare_name.c 25116 2011-08-29 17:20:37Z ghudson $
  */
 
 #include "gssapiP_krb5.h"

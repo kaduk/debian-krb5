@@ -22,7 +22,7 @@
  */
 
 /*
- * $Id$
+ * $Id: util_buffer.c 25332 2011-10-14 14:40:10Z hartmans $
  */
 
 #include "gssapiP_generic.h"

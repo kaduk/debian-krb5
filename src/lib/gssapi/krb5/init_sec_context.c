@@ -106,7 +106,7 @@
 #include <assert.h>
 
 /*
- * $Id$
+ * $Id: init_sec_context.c 25332 2011-10-14 14:40:10Z hartmans $
  */
 
 /* XXX This is for debugging only!!!  Should become a real bitfield

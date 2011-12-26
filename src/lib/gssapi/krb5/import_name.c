@@ -22,7 +22,7 @@
  */
 
 /*
- * $Id$
+ * $Id: import_name.c 25144 2011-09-04 23:52:34Z raeburn $
  */
 
 #include "gssapiP_krb5.h"
