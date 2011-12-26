@@ -175,28 +175,28 @@ of just exec, as done by su.
 .PP
 Ksu can be used to create a new security context for the
 target program (either the target
-shell, or command specified via the -e option).
+shell, or command specified via the \-e option).
 The target program inherits a set
 of credentials from the source user.
 By default, this set includes all of the credentials
 in the source cache plus any
 additional credentials obtained during authentication.
 The source user is able to limit the credentials in this set
-by using -z or -Z option.
--z restricts the copy of tickets from the source cache
+by using \-z or \-Z option.
+\-z restricts the copy of tickets from the source cache
 to the target cache to only the tickets where client ==
-the target principal name.  The -Z option
+the target principal name.  The \-Z option
 provides the target user with a fresh target cache
 (no creds in the cache). Note that for security reasons,
 when the source user is root and target user is non-root,
--z option is the default mode of operation. 
+\-z option is the default mode of operation. 
 
 While no authentication takes place if the source user
 is root or is the same as the target user, additional
 tickets can still be obtained for the target cache.
-If -n is specified and no credentials can be copied to the target
+If \-n is specified and no credentials can be copied to the target
 cache,  the  source user is prompted for a Kerberos password
-(unless -Z specified or GET_TGT_VIA_PASSWD is undefined). If
+(unless \-Z specified or GET_TGT_VIA_PASSWD is undefined). If
 successful,  a  TGT is obtained from the Kerberos server and
 stored in the target cache.  Otherwise,
 if a password is not provided (user hit return)
@@ -301,7 +301,7 @@ ksu deletes the target cache.
 \fB\-D
 turn on debug mode.
 .TP 10
-\fITicket granting ticket options: -l lifetime -r time -pf\fP
+\fITicket granting ticket options: \-l lifetime \-r time \-pf\fP
 The ticket granting ticket options only apply to the
 case where there are no appropriate tickets in
 the cache to authenticate the source user. In this case
@@ -341,7 +341,7 @@ if you want the tickets for other then the default
 principal. Note that the
 .B \-z 
 option is mutually
-exclusive with the -Z option.
+exclusive with the \-Z option.
 .TP 10
 \fB\-Z
 Don't copy any tickets from the source cache to the
@@ -350,7 +350,7 @@ where the default principal name of the cache is
 initialized to the target principal name.  Note that
 .B \-Z
 option is mutually
-exclusive with the -z option.
+exclusive with the \-z option.
 .TP 10
 \fB\-q
 suppress the printing of status messages.
@@ -365,7 +365,7 @@ specified command (Example of usage: ksu bob
 ls
 .B \-lag).
 
-\fIThe authorization algorithm for -e is as follows:\fP
+\fIThe authorization algorithm for \-e is as follows:\fP
 
 If the source user is root or source user == target user,
 no authorization takes place and             
@@ -418,7 +418,7 @@ path or just the program name.
 .TP 10
 \fB\-a \fIargs
 specify arguments to be passed to the target shell.
-Note: that all flags and parameters following -a
+Note: that all flags and parameters following \-a
 will be passed to the shell, thus all options
 intended for ksu must precede
 .B \-a.
@@ -449,7 +449,7 @@ have a secure channel, the password may get exposed.
 during the resolution of the default principal name,
 PRINC_LOOK_AHEAD enables ksu to find principal names          
 in the .k5users file as described in the OPTIONS section
-(see -n option).      
+(see \-n option).      
 .TP 10
 \fICMD_PATH\fP
 specifies a list of directories containing programs
@@ -463,8 +463,8 @@ the names of "legal shells".  Note that the target user's
 shell is obtained from the passwd file.
 .TP 10
 SAMPLE CONFIGURATION:
-KSU_OPTS = -DGET_TGT_VIA_PASSWD 
--DPRINC_LOOK_AHEAD -DCMD_PATH='"/bin /usr/ucb /local/bin"
+KSU_OPTS = \-DGET_TGT_VIA_PASSWD 
+\-DPRINC_LOOK_AHEAD \-DCMD_PATH='"/bin /usr/ucb /local/bin"
 .TP 10
 PERMISSIONS FOR KSU
 ksu should be owned by root and have the set user id  bit turned on.   
