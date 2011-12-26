@@ -118,8 +118,8 @@
  * krb5 slave support follows
  */
 
-#define KPROP_DEFAULT_FILE "@LOCALSTATEDIR/krb5kdc/slave_datatrans"
-#define KPROPD_DEFAULT_FILE "@LOCALSTATEDIR/krb5kdc/from_master"
+#define KPROP_DEFAULT_FILE "/var/lib/krb5kdc/slave_datatrans"
+#define KPROPD_DEFAULT_FILE "/var/lib/krb5kdc/from_master"
 #define KPROPD_DEFAULT_KDB5_UTIL "@SBINDIR/kdb5_util"
 #define KPROPD_DEFAULT_KPROP "@SBINDIR/kprop"
 #define KPROPD_DEFAULT_KRB_DB DEFAULT_KDB_FILE
