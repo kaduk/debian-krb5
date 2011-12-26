@@ -321,6 +321,7 @@ open_connection(krb5_context context, char *host, int *fd)
     int error;
 
     memset(&hints, 0, sizeof(hints));
+    hints.ai_flags = AI_ADDRCONFIG;
     hints.ai_family = PF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_ADDRCONFIG;
