@@ -37,6 +37,10 @@
 
 #define MAX_USERNAME 65
 
+#ifndef MAXPATHLEN
+# define MAXPATHLEN 4096
+#endif
+
 #if defined(__APPLE__) && defined(__MACH__)
 #include <hfs/hfs_mount.h>      /* XXX */
 #define FILE_OWNER_OK(UID)  ((UID) == 0 || (UID) == UNKNOWNUID)
