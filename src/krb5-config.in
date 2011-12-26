@@ -117,6 +117,7 @@ if test -n "$do_help"; then
     echo "        [--prefix]        Kerberos installed prefix"
     echo "        [--exec-prefix]   Kerberos installed exec_prefix"
     echo "        [--cflags]        Compile time CFLAGS"
+    echo "        [--deps]          Include dependent libraries"
     echo "        [--libs]          List libraries required to link [LIBRARIES]"
     echo "Libraries:"
     echo "        krb5              Kerberos 5 application"
