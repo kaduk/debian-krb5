@@ -24,7 +24,7 @@
 .\"
 .\" Copyright (c) 2003, Sun Microsystems, Inc.  All Rights Reserved
 .\"
-.TH KPROPLOG 1
+.TH KPROPLOG 8
 .SH NAME
 kproplog \- display the contents of the Kerberos principal update log
 .SH SYNOPSIS

@@ -522,7 +522,7 @@ is specified, the default is AUTH.
 In the following example, the logging messages from the KDC will go to
 the console and to the system log under the facility LOG_DAEMON with
 default severity of LOG_INFO; and the logging messages from the
-administrative server will be appended to the file /var/adm/kadmin.log
+administrative server will be appended to the file /var/log/kadmin.log
 and sent to the device /dev/tty04.
 .sp
 .nf
@@ -530,7 +530,7 @@ and sent to the device /dev/tty04.
 [logging]
 	kdc = CONSOLE
 	kdc = SYSLOG:INFO:DAEMON
-	admin_server = FILE:/var/adm/kadmin.log
+	admin_server = FILE:/var/log/kadmin.log
 	admin_server = DEVICE=/dev/tty04
 .in -1i
 .fi

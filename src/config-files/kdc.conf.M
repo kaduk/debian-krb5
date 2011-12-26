@@ -92,14 +92,14 @@ This
 .B string
 specifies the location of the access control list (acl) file that
 kadmin uses to determine which principals are allowed which permissions
-on the database. The default value is /usr/local/var/krb5kdc/kadm5.acl.
+on the database. The default value is /etc/krb5kdc/kadm5.acl.
 
 .IP admin_keytab
 This
 .B string
 Specifies the location of the keytab file that kadmin uses to
 authenticate to the database.  The default value is
-/usr/local/var/krb5kdc/kadm5.keytab.
+/etc/krb5kdc/kadm5.keytab.
 
 .IP database_name
 This
@@ -274,7 +274,7 @@ tickets should be checked against the transit path computed from the
 realm names and the [capaths] section of its krb5.conf file
 
 .SH FILES 
-/usr/local/var/krb5kdc/kdc.conf
+/etc/krb5kdc/kdc.conf
 
 .SH SEE ALSO
 krb5.conf(5), krb5kdc(8)
