@@ -575,6 +575,9 @@ extern char *strdup (const char *);
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>                  /* MAXPATHLEN */
 #endif
+#ifndef MAXPATHLEN
+# define MAXPATHLEN 4096
+#endif
 
 #ifdef HAVE_SYS_FILE_H
 #include <sys/file.h>                   /* prototypes for file-related
@@ -2109,7 +2112,11 @@ struct srv_dns_entry {
     char *host;
 };
 
-#define MAX_DNS_NAMELEN (15*(MAXHOSTNAMELEN + 1)+1)
+/*
+ * Taken from MAX_DNAME in arpa/nameser.h. This is a protocol constant, and it is not
+ * desirable to include that file here.
+ */
+#define MAX_DNS_NAMELEN 1025
 
 #ifdef KRB5_DNS_LOOKUP
 krb5_error_code
