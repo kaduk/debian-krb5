@@ -290,7 +290,7 @@ explicitly set the key version number.
 .TP
 \fB\-policy\fP \fIpolicy\fP
 policy used by this principal.  If no policy is supplied, then if the
-policy "default" exists and the -clearpolicy is not also specified,
+policy "default" exists and the \-clearpolicy is not also specified,
 then the policy "default" is used; otherwise, the principal 
 will have no policy, and a warning message will be printed.
 .TP
@@ -633,7 +633,7 @@ Key: vno 1, DES cbc mode with CRC-32, no salt
 Key: vno 1, DES cbc mode with CRC-32, Version 4
 Attributes:
 Policy: [none]
-kadmin: getprinc -terse systest
+kadmin: getprinc \-terse systest
 systest@BLEEP.COM	3	86400	604800	1
 785926535	753241234	785900000
 tlyu/admin@BLEEP.COM	786100034	0	0
@@ -806,7 +806,7 @@ Minimum password length: 6
 Minimum number of password character classes: 2
 Number of old keys kept: 5
 Reference count: 17
-kadmin: get_policy -terse admin
+kadmin: get_policy \-terse admin
 admin	15552000	0	6	2	5	17
 kadmin:
 .TP
@@ -897,7 +897,7 @@ command.
 .RS
 .TP
 EXAMPLE:
-kadmin: ktadd -k /tmp/foo-new-keytab host/foo.mit.edu
+kadmin: ktadd \-k /tmp/foo-new-keytab host/foo.mit.edu
 Entry for principal host/foo.mit.edu@ATHENA.MIT.EDU with
 	kvno 3, encryption type DES-CBC-CRC added to keytab
 	WRFILE:/tmp/foo-new-keytab
@@ -924,7 +924,7 @@ option is specified, less verbose status information is displayed.
 .RS
 .TP
 EXAMPLE:
-kadmin: ktremove -k /usr/local/var/krb5kdc/kadmind.keytab kadmin/admin
+kadmin: ktremove \-k /usr/local/var/krb5kdc/kadmind.keytab kadmin/admin
 Entry for principal kadmin/admin with kvno 3 removed
 	from keytab WRFILE:/usr/local/var/krb5kdc/kadmind.keytab.
 kadmin:
