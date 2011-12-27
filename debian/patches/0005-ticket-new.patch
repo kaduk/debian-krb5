@@ -1,0 +1,28 @@
+From 7e3823a58654d099feabe46f250dbe45cd38ffa1 Mon Sep 17 00:00:00 2001
+From: Sam Hartman <hartmans@debian.org>
+Date: Tue, 29 Nov 2011 13:57:02 -0500
+Subject: =?UTF-8?q?ticket:=20new=0ASubject:=20LIBS=20should=20not=20include=20?=
+ =?UTF-8?q?PKINIT=5FCRYPTO=5FIMPL=5FLIBS=0Atags:=20pullup=0Atarget=5Fversion?=
+ =?UTF-8?q?:=201.10?=
+
+AC_CHECK_LIB should put -lcrypto in PKINIT_CRYPTO_IMPL_LIBS not LIBS
+for pkinit.  A similar problem exists for crypto_impl and is not
+addressed by this patch.
+(cherry picked from commit c13c5af7ddf8ac65a62ac645b4765534b01ede8c)
+---
+ src/configure.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/configure.in b/src/configure.in
+index d3e407a..3101439 100644
+--- a/src/configure.in
++++ b/src/configure.in
+@@ -202,7 +202,7 @@ AC_MSG_RESULT("pkinit will use \'$withval\'")
+ ], withval=$PKINIT_CRYPTO_IMPL)
+ case "$withval" in
+ builtin|openssl)
+-  AC_CHECK_LIB(crypto, PKCS7_get_signer_info)
++  AC_CHECK_LIB(crypto, PKCS7_get_signer_info, PKINIT_CRYPTO_IMPL_LIBS=-lcrypto)
+   PKINIT_CRYPTO_IMPL=openssl
+   ;;
+ nss)

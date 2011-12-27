@@ -1,0 +1,25 @@
+From 256069162b11544215d00d9d38471aeb4cdf2bf8 Mon Sep 17 00:00:00 2001
+From: Sam Hartman <hartmans@debian.org>
+Date: Tue, 29 Nov 2011 14:58:00 -0500
+Subject: =?UTF-8?q?ticket:=20new=0Atarget=5Fversion:=201.10=0Atags:=20pullup?=
+ =?UTF-8?q?=0Asubject:=20Use=20INSTALL=5FDATA=20to=20install=20message=20cat?=
+ =?UTF-8?q?alogues?=
+
+Use INSTALL_DATA to avoid marking .mo files executable
+---
+ src/po/Makefile.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/po/Makefile.in b/src/po/Makefile.in
+index 4b58c72..380674c 100644
+--- a/src/po/Makefile.in
++++ b/src/po/Makefile.in
+@@ -45,7 +45,7 @@ install::
+ 	  lang=`basename $$c .mo`; \
+ 	  $(top_srcdir)/config/mkinstalldirs \
+ 	    $(DESTDIR)$(KRB5_LOCALEDIR)/$$lang/LC_MESSAGES; \
+-	  install -c $$c \
++	  $(INSTALL_DATA) $$c \
+ 	    $(DESTDIR)$(KRB5_LOCALEDIR)/$$lang/LC_MESSAGES/$(DOMAIN).mo; \
+ 	done
+ 

@@ -1,0 +1,12 @@
+0001-Debian-manpage-patch.patch
+0002-ticket-new.patch
+0003-Debian-HURD-compatibility.patch
+0004-debian-install-ldap-library-in-subdirectory.patch
+0005-ticket-new.patch
+0006-ticket-new.patch
+0007-ticket-new.patch
+0008-Debian-set-AI_ADDRCONFIG-for-kprop-slave.patch
+0009-debian-suppress-usr-lib-in-krb5-config.patch
+0010-debian-osconf.hin-path-changes.patch
+0011-autoreconf.patch
+0012-Debian-.gbp.conf.patch
