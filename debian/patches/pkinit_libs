@@ -1,4 +1,4 @@
-From 7e3823a58654d099feabe46f250dbe45cd38ffa1 Mon Sep 17 00:00:00 2001
+From 048601d599642a2a3877f4a428de966524c0f8a9 Mon Sep 17 00:00:00 2001
 From: Sam Hartman <hartmans@debian.org>
 Date: Tue, 29 Nov 2011 13:57:02 -0500
 Subject: =?UTF-8?q?ticket:=20new=0ASubject:=20LIBS=20should=20not=20include=20?=
@@ -9,6 +9,9 @@ AC_CHECK_LIB should put -lcrypto in PKINIT_CRYPTO_IMPL_LIBS not LIBS
 for pkinit.  A similar problem exists for crypto_impl and is not
 addressed by this patch.
 (cherry picked from commit c13c5af7ddf8ac65a62ac645b4765534b01ede8c)
+
+Patch-Category: to-submit
+Patch-Name: pkinit_libs
 ---
  src/configure.in |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)

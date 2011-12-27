@@ -1,4 +1,4 @@
-From 256069162b11544215d00d9d38471aeb4cdf2bf8 Mon Sep 17 00:00:00 2001
+From e02237b3062181a5e73aa7e78863261e4848a423 Mon Sep 17 00:00:00 2001
 From: Sam Hartman <hartmans@debian.org>
 Date: Tue, 29 Nov 2011 14:58:00 -0500
 Subject: =?UTF-8?q?ticket:=20new=0Atarget=5Fversion:=201.10=0Atags:=20pullup?=
@@ -6,6 +6,9 @@ Subject: =?UTF-8?q?ticket:=20new=0Atarget=5Fversion:=201.10=0Atags:=20pullup?=
  =?UTF-8?q?alogues?=
 
 Use INSTALL_DATA to avoid marking .mo files executable
+
+Patch-Category: to-submit
+Patch-Name: install_po
 ---
  src/po/Makefile.in |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)

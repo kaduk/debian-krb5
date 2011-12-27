@@ -1,10 +1,11 @@
-From 9ef8244bcf47bcff29aadac63cfed8d3133a935d Mon Sep 17 00:00:00 2001
+From 09304f098278d9474e74f56554d2c54e59e3f430 Mon Sep 17 00:00:00 2001
 From: Sam Hartman <hartmans@debian.org>
 Date: Mon, 26 Dec 2011 18:12:39 -0500
-Subject: debian: install ldap library in subdirectory
+Subject: =?UTF-8?q?debian:=20install=20ldap=20library=20in=20subdirectory=0A?=
+ =?UTF-8?q?Debian=20received=20a=20request=20to=20install=20the=20internal=20?=
+ =?UTF-8?q?ldap=20library=20not=20in=0Athe=20main=20lib=20directory.?=
 
-Debian received a request to install the internal ldap library not in
-the main lib directory.
+Patch-Category: debian-local
 ---
  src/plugins/kdb/ldap/Makefile.in           |    2 +-
  src/plugins/kdb/ldap/ldap_util/Makefile.in |    2 +-

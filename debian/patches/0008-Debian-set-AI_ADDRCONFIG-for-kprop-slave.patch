@@ -1,4 +1,4 @@
-From f8b6304e2cdb35ec77bfe66f8ed68051014ad892 Mon Sep 17 00:00:00 2001
+From aa18535d2f5ff745a0da7e0d21c618f7d7a0aee3 Mon Sep 17 00:00:00 2001
 From: Sam Hartman <hartmans@debian.org>
 Date: Mon, 26 Dec 2011 18:19:19 -0500
 Subject: Debian: set AI_ADDRCONFIG for kprop slave
