@@ -1,0 +1,13 @@
+Added with the following log entry:  Fix TIOCGLTC lossage on alpha.  This
+probably isn't appropriate for all non-Linux platforms.
+
+--- krb5-1.4.2.orig/src/appl/bsd/krlogin.c
++++ krb5-1.4.2/src/appl/bsd/krlogin.c
+@@ -137,6 +137,7 @@
+ #include <sys/ptyvar.h>
+ #endif
+ #endif
++#undef TIOCGLTC
+ 
+ #ifndef TIOCPKT_NOSTOP
+ /* These values are over-the-wire protocol, *not* local values */

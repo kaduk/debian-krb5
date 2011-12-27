@@ -1,0 +1,21 @@
+Support comments after whitespace in configuration files.
+
+Kerberos RT #1988
+Debian bug #314609
+
+--- krb5-1.4.2.orig/src/util/profile/prof_parse.c
++++ krb5-1.4.2/src/util/profile/prof_parse.c
+@@ -84,10 +84,10 @@
+ 	
+ 	if (*line == 0)
+ 		return 0;
+-	if (line[0] == ';' || line[0] == '#')
+-		return 0;
+-	strip_line(line);
+ 	cp = skip_over_blanks(line);
++	if (cp[0] == ';' || cp[0] == '#')
++		return 0;
++	strip_line(cp);
+ 	ch = *cp;
+ 	if (ch == 0)
+ 		return 0;

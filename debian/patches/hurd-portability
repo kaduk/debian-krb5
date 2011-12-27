@@ -1,0 +1,365 @@
+Patch for Hurd portability, setting MAXPATHLEN and MAXHOSTNAMELEN where
+needed and declaring additional weak symbols.  There's probably a better
+way to do this for upstream; it needs a bit more attention towards
+integration with configure.  Patch from Michael Banck <mbanck@debian.org>.
+
+Kerberos RT #3265
+Debian bug #324305 and #341608
+
+--- krb5/src/include/k5-thread.h.orig	2005-12-01 22:12:36.000000000 +0100
++++ krb5/src/include/k5-thread.h	2005-12-01 22:05:37.000000000 +0100
+@@ -375,6 +375,12 @@
+ # pragma weak pthread_mutex_init
+ # pragma weak pthread_self
+ # pragma weak pthread_equal
++# if __GNU__
++#  pragma weak _pthread_mutex_lock
++#  pragma weak _pthread_mutex_unlock
++#  pragma weak _pthread_mutex_destroy
++#  pragma weak _pthread_mutex_init
++# endif /* __GNU__ */
+ # ifdef HAVE_PTHREAD_MUTEXATTR_SETROBUST_NP_IN_THREAD_LIB
+ #  pragma weak pthread_mutexattr_setrobust_np
+ # endif
+
+=== krb5/src/appl/bsd/krlogind.c
+==================================================================
+--- krb5/src/appl/bsd/krlogind.c  (revision 1833)
++++ krb5/src/appl/bsd/krlogind.c  (local)
+@@ -302,6 +302,10 @@
+ #define MAXDNAME 256 /*per the rfc*/
+ #endif
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ char		lusername[UT_NAMESIZE+1];
+ char		rusername[UT_NAMESIZE+1];
+ char            *krusername = 0;
+=== krb5/src/appl/bsd/krshd.c
+==================================================================
+--- krb5/src/appl/bsd/krshd.c  (revision 1833)
++++ krb5/src/appl/bsd/krshd.c  (local)
+@@ -515,6 +515,11 @@
+ #define NCARGS 1024
+ #endif
+ 
++#if NCARGS == INT_MAX
++#undef NCARGS
++#define NCARGS 4096
++#endif
++
+ #define NMAX   16 
+ 
+ int pid;
+=== krb5/src/appl/bsd/login.c
+==================================================================
+--- krb5/src/appl/bsd/login.c  (revision 1833)
++++ krb5/src/appl/bsd/login.c  (local)
+@@ -132,6 +132,14 @@
+ #define siglongjmp	longjmp
+ #endif
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ #ifdef POSIX_SIGNALS
+ typedef struct sigaction handler;
+ #define handler_init(H,F)		(sigemptyset(&(H).sa_mask), \
+=== krb5/src/appl/gssftp/ftp/cmds.c
+==================================================================
+--- krb5/src/appl/gssftp/ftp/cmds.c  (revision 1833)
++++ krb5/src/appl/gssftp/ftp/cmds.c  (local)
+@@ -66,6 +66,10 @@
+ #include <ctype.h>
+ #include <time.h>
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ #ifdef HAVE_GETCWD
+ #define getwd(x) getcwd(x,MAXPATHLEN)
+ #endif
+=== krb5/src/appl/gssftp/ftp/ftp.c
+==================================================================
+--- krb5/src/appl/gssftp/ftp/ftp.c  (revision 1833)
++++ krb5/src/appl/gssftp/ftp/ftp.c  (local)
+@@ -153,6 +153,10 @@
+ #include "ftp_var.h"
+ #include "secure.h"
+ 
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ #ifdef GSSAPI
+ void user_gss_error (OM_uint32, OM_uint32, char *);
+ #endif
+=== krb5/src/appl/gssftp/ftp/ftp_var.h
+==================================================================
+--- krb5/src/appl/gssftp/ftp/ftp_var.h  (revision 1833)
++++ krb5/src/appl/gssftp/ftp/ftp_var.h  (local)
+@@ -70,6 +70,10 @@
+ #define extern
+ #endif
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ /*
+  * Options and other state info.
+  */
+=== krb5/src/appl/gssftp/ftpd/ftpd.c
+==================================================================
+--- krb5/src/appl/gssftp/ftpd/ftpd.c  (revision 1833)
++++ krb5/src/appl/gssftp/ftpd/ftpd.c  (local)
+@@ -171,6 +171,14 @@
+ #include "ftpd_var.h"
+ #include "secure.h"
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ extern	char *crypt();
+ extern	char version[];
+ extern	char *home;		/* pointer to home directory for glob */
+=== krb5/src/clients/ksu/ksu.h
+==================================================================
+--- krb5/src/clients/ksu/ksu.h  (revision 1833)
++++ krb5/src/clients/ksu/ksu.h  (local)
+@@ -56,8 +56,11 @@
+ #define CACHE_MODE 0600
+ #define MAX_CMD 2048 /* this is temp, should use realloc instead,          
+ 			as done in most of the code */       
+-		      
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif		      
++
+ extern int optind;
+ extern char * optarg;
+ 
+=== krb5/src/kadmin/ktutil/ktutil_funcs.c
+==================================================================
+--- krb5/src/kadmin/ktutil/ktutil_funcs.c  (revision 1833)
++++ krb5/src/kadmin/ktutil/ktutil_funcs.c  (local)
+@@ -35,6 +35,10 @@
+ #include <string.h>
+ #include <ctype.h>
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ /*
+  * Free a kt_list
+  */
+=== krb5/src/lib/kdb/fetch_mkey.c
+==================================================================
+--- krb5/src/lib/kdb/fetch_mkey.c  (revision 1833)
++++ krb5/src/lib/kdb/fetch_mkey.c  (local)
+@@ -80,6 +80,10 @@
+ #define min(a,b) (((a) < (b)) ? (a) : (b))
+ #endif
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif  
++
+ krb5_error_code
+ krb5_db_fetch_mkey(context, mname, etype, fromkeyboard, twice, keyfile,
+ 		   salt, key)
+=== krb5/src/lib/krb4/RealmsConfig-glue.c
+==================================================================
+--- krb5/src/lib/krb4/RealmsConfig-glue.c  (revision 1833)
++++ krb5/src/lib/krb4/RealmsConfig-glue.c  (local)
+@@ -45,6 +45,10 @@
+ #include "krb5.h"
+ #undef KRB5_PRIVATE
+ 
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ /* These two *must* be kept in sync to avoid buffer overflows. */
+ #define SCNSCRATCH	"%1023s"
+ #define SCRATCHSZ	1024
+=== krb5/src/lib/krb4/g_cnffile.c
+==================================================================
+--- krb5/src/lib/krb4/g_cnffile.c  (revision 1833)
++++ krb5/src/lib/krb4/g_cnffile.c  (local)
+@@ -20,6 +20,10 @@
+ #include "k5-int.h"
+ #include "krb4int.h"
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif 
++
+ krb5_context krb5__krb4_context = 0;
+ 
+ static FILE*
+=== krb5/src/lib/krb4/g_phost.c
+==================================================================
+--- krb5/src/lib/krb4/g_phost.c  (revision 1833)
++++ krb5/src/lib/krb4/g_phost.c  (local)
+@@ -48,6 +48,10 @@
+  * to the original "alias" argument is returned.
+  */
+ 
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ char * KRB5_CALLCONV
+ krb_get_phost(alias)
+     char *alias;
+=== krb5/src/lib/krb4/kuserok.c
+==================================================================
+--- krb5/src/lib/krb4/kuserok.c  (revision 1833)
++++ krb5/src/lib/krb4/kuserok.c  (local)
+@@ -57,6 +57,10 @@
+ #define NOTOK 1
+ #define MAX_USERNAME 10
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif 
++
+ /*
+  * Given a Kerberos principal "kdata", and a local username "luser",
+  * determine whether user is authorized to login according to the
+=== krb5/src/lib/krb4/send_to_kdc.c
+==================================================================
+--- krb5/src/lib/krb4/send_to_kdc.c  (revision 1833)
++++ krb5/src/lib/krb4/send_to_kdc.c  (local)
+@@ -55,6 +55,10 @@
+ static char *prog = "send_to_kdc";
+ #endif
+ 
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ /*
+  * send_to_kdc() sends a message to the Kerberos authentication
+  * server(s) in the given realm and returns the reply message.
+=== krb5/src/lib/krb4/tkt_string.c
+==================================================================
+--- krb5/src/lib/krb4/tkt_string.c  (revision 1833)
++++ krb5/src/lib/krb4/tkt_string.c  (local)
+@@ -44,6 +44,10 @@
+ uid_t getuid(void) { return 0; }
+ #endif /* _WIN32 */
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ /*
+  * This routine is used to generate the name of the file that holds
+  * the user's cache of server tickets and associated session keys.
+=== krb5/src/lib/krb5/os/kuserok.c
+==================================================================
+--- krb5/src/lib/krb5/os/kuserok.c  (revision 1833)
++++ krb5/src/lib/krb5/os/kuserok.c  (local)
+@@ -40,6 +40,10 @@
+ 
+ #define MAX_USERNAME 65
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ /*
+  * Given a Kerberos principal "principal", and a local username "luser",
+  * determine whether user is authorized to login according to the
+=== krb5/src/lib/krb5/os/sn2princ.c
+==================================================================
+--- krb5/src/lib/krb5/os/sn2princ.c  (revision 1833)
++++ krb5/src/lib/krb5/os/sn2princ.c  (local)
+@@ -61,6 +61,10 @@
+ }
+ 
+ 
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ krb5_error_code KRB5_CALLCONV
+ krb5_sname_to_principal(krb5_context context, const char *hostname, const char *sname, krb5_int32 type, krb5_principal *ret_princ)
+ {
+=== krb5/src/tests/resolve/resolve.c
+==================================================================
+--- krb5/src/tests/resolve/resolve.c  (revision 1833)
++++ krb5/src/tests/resolve/resolve.c  (local)
+@@ -70,6 +70,10 @@
+ 
+ #include <netdb.h>
+ 
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ int
+ main(argc, argv)
+      int argc;
+=== krb5/src/util/db2/btree/bt_open.c
+==================================================================
+--- krb5/src/util/db2/btree/bt_open.c  (revision 1833)
++++ krb5/src/util/db2/btree/bt_open.c  (local)
+@@ -66,6 +66,10 @@
+ #define	MINPSIZE	128
+ #endif
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ static int byteorder __P((void));
+ static int nroot __P((BTREE *));
+ static int tmp __P((void));
+=== krb5/src/util/db2/hash/dbm.c
+==================================================================
+--- krb5/src/util/db2/hash/dbm.c  (revision 1833)
++++ krb5/src/util/db2/hash/dbm.c  (local)
+@@ -58,6 +58,10 @@
+ 
+ #define NEED_COPY
+ 
++#ifndef MAXPATHLEN
++# define MAXPATHLEN 4096
++#endif
++
+ /*
+  *
+  * This package provides dbm and ndbm compatible interfaces to DB.
+=== krb5/src/util/pty/sane_hostname.c
+==================================================================
+--- krb5/src/util/pty/sane_hostname.c  (revision 1833)
++++ krb5/src/util/pty/sane_hostname.c  (local)
+@@ -29,6 +29,10 @@
+ #include "socket-utils.h"
+ #include "fake-addrinfo.h"
+ 
++#ifndef MAXHOSTNAMELEN
++# define MAXHOSTNAMELEN 256
++#endif
++
+ static void
+ downcase (char *s)
+ {

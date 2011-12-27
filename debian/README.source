@@ -1,0 +1,30 @@
+dpkg-source -x will generate sources ready for editing.  The
+debian/patches directory is for the maintainer's convenience in
+tracking some old changes and is no longer used.
+
+Submitting Patch to the Maintainer:
+
+It's best to clone the git repository mentioned in debian/control and
+use the git format-patch command to generate patches.  Attach these
+patches to bugs on  the krb5 source package.
+
+
+Preparing a new Upstream version:
+
+You'll need two things to do this correctly.  First, you'll need the
+upstream tarball.  Secondly, you'll need the upstream subversion
+repository converted to git with parameters compatible with
+git://git.debian.org/git/pkg-k5-afs/krb5.git .  My work flow combines
+the process of making DFSG modifications with the process of handling
+the SCM issues.
+From within a git repository containing both the upstream tag for the release and the debian packaging:
+
+1) Make sure there is a local upstream branch that descends from origin/upstream
+2) debian/prepsource upstream_tarfile tag_from_subversion upstream/version_number
+
+This will update the upstream branch and create an upstream tag.  You
+will then probably want to `git merge upstream/upstream_version` to
+merge in the changes into the Debian packaging branch.
+
+
+ -- Sam Hartman <hartmans@debian.org>, Wed, 27 May 2009 20:48:33 -0400

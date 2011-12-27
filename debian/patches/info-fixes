@@ -1,0 +1,79 @@
+Add dircategory and direntry lines to the texinfo source and fix a few
+variable typos.
+
+Kerberos RT #3014
+
+--- krb5-1.4.2.orig/doc/admin.texinfo
++++ krb5-1.4.2/doc/admin.texinfo
+@@ -14,6 +14,11 @@
+ @parskip 6pt plus 6pt
+ @end iftex
+ 
++@dircategory Kerberos
++@direntry
++* krb5-admin: (krb5-admin).             Kerberos V5 Administrator's Guide
++@end direntry
++
+ @include definitions.texinfo
+ @set EDITION 1.0
+ @set UPDATED June 16, 2000
+@@ -2443,7 +2448,7 @@
+ @b{Re-enter password for principal krbtgt/@value{PRIMARYREALM}@@@value{SECONDREALM}:}
+ @b{kadmin:} add_princ -requires_preauth krbtgt/@value{SECONDREALM}@@@value{PRIMARYREALM}
+ @b{Enter password for principal krbtgt/@value{SECONDREALM}@@@value{PRIMARYREALM}:}
+-@b{Enter password for principal krbtgt/@value{SECONDREALM}@@@value{PRIMARYREALML}:}
++@b{Enter password for principal krbtgt/@value{SECONDREALM}@@@value{PRIMARYREALM}:}
+ @b{kadmin:}
+ @end group
+ @end smallexample
+--- krb5-1.4.2.orig/doc/install.texinfo
++++ krb5-1.4.2/doc/install.texinfo
+@@ -15,6 +15,11 @@
+ @parskip 6pt plus 6pt
+ @end iftex
+ 
++@dircategory Kerberos
++@direntry
++* krb5-install: (krb5-install).         Kerberos V5 Installation Guide
++@end direntry
++
+ @include definitions.texinfo
+ @set EDITION 1.1
+ 
+--- krb5-1.4.2.orig/doc/krb425.texinfo
++++ krb5-1.4.2/doc/krb425.texinfo
+@@ -15,6 +15,11 @@
+ @parskip 6pt plus 6pt
+ @end iftex
+ 
++@dircategory Kerberos
++@direntry
++* krb425: (krb425).                     Upgrading to Kerberos V5 from V4
++@end direntry
++
+ @include definitions.texinfo
+ @set EDITION 1.0
+ @set UPDATED May 22, 2003
+--- krb5-1.4.2.orig/doc/user-guide.texinfo
++++ krb5-1.4.2/doc/user-guide.texinfo
+@@ -13,6 +13,11 @@
+ @parskip 6pt plus 6pt
+ @end iftex
+ 
++@dircategory Kerberos
++@direntry
++* krb5-user: (krb5-user).               Kerberos V5 UNIX User's Guide
++@end direntry
++
+ @include definitions.texinfo
+ @set EDITION 1.0
+ 
+@@ -932,7 +937,7 @@
+ [ Kerberos V5 accepts you as ``@value{RANDOMUSER1}@@@value{PRIMARYDOMAIN}'' ]
+ [ Kerberos V5 accepted forwarded credentials ]
+ What you type is protected by encryption.
+-Last login: Tue Jul 30 18:47:44 from @value{RANDOMHOST}.@value{SECONDDOMAIN}
++Last login: Tue Jul 30 18:47:44 from @value{RANDOMHOST1}.@value{SECONDDOMAIN}
+ Athena Server (sun4) Version 9.1.11 Tue Jul 30 14:40:08 EDT 2002
+ 
+ shell%}
