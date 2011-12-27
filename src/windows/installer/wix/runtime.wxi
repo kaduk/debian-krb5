@@ -1,0 +1,8 @@
+﻿<?xml version="1.0"?> 
+<Include>
+    <?ifdef CL1600 ?>
+      <MergeRef Id="MSVCRT100MEM"/>
+      <MergeRef Id="MSVCRT100MFC"/>
+      <MergeRef Id="MSVCRT100MFL"/>
+    <?endif?>
+</Include>

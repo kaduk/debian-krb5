@@ -1,0 +1,96 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+       <B>klist</B>  [<B>-e</B>]  [[<B>-c</B>]  [<B>-l</B>]  [<B>-A</B>]  [<B>-f</B>]  [<B>-s</B>]  [<B>-a</B>   [<B>-n</B>]]] [<B>-k</B> [<B>-t</B>] [<B>-K</B>]]
+       [<I>cache</I><B>_</B><I>name</I> | <I>keytab</I><B>_</B><I>name</I>]
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+       <I>Klist</I> lists the Kerberos principal and Kerberos tickets held in a  cre‐
+       dentials cache, or the keys held in a <B>keytab</B> file.
+
+
+</PRE>
+<H2>OPTIONS</H2><PRE>
+       <B>-e</B>     displays  the encryption types of the session key and the ticket
+              for each credential in the credential cache, or each key in  the
+              keytab file.
+
+       <B>-c</B>     List  tickets  held in a credentials cache.  This is the default
+              if neither <B>-c</B> nor <B>-k</B> is specified.
+
+       <B>-l</B>     If a cache collection is available, displays a table summarizing
+              the caches present in the collection.
+
+       <B>-A</B>     If a cache collection is available, displays the contents of all
+              of the caches in the collection.
+
+       <B>-f</B>     shows the flags present in the credentials, using the  following
+              abbreviations:
+
+                   F    <B>F</B>orwardable
+                   f    <B>f</B>orwarded
+                   P    <B>P</B>roxiable
+                   p    <B>p</B>roxy
+                   D    post<B>D</B>ateable
+                   d    post<B>d</B>ated
+                   R    <B>R</B>enewable
+                   I    <B>I</B>nitial
+                   i    <B>i</B>nvalid
+                   H    <B>H</B>ardware authenticated
+                   A    pre<B>A</B>uthenticated
+                   T    <B>T</B>ransit policy checked
+                   O    <B>O</B>kay as delegate
+                   a    <B>a</B>nonymous
+
+       <B>-s</B>     causes  <B>klist</B>  to run silently (produce no output), but to still
+              set the exit status according to whether it  finds  the  creden‐
+              tials  cache.   The  exit status is `0' if <B>klist</B> finds a creden‐
+              tials cache, and `1' if it does not or if the tickets are
+               expired.
+
+       <B>-a</B>     display list of addresses in credentials.
+
+       <B>-n</B>     show numeric addresses instead of reverse-resolving addresses.
+
+       <B>-k</B>     List keys held in a <B>keytab</B> file.
+
+       <B>Klist</B> uses the following environment variables:
+
+       KRB5CCNAME      Location of the default Kerberos 5 credentials (ticket)
+                       cache, in the form <I>type</I>:<I>residual</I>.  If no type prefix is
+                       present,  the  <B>FILE</B>  type  is assumed.  The type of the
+                       default cache may determine the availability of a cache
+                       collection;  for  instance, a default cache of type <B>DIR</B>
+                       causes caches within the directory to be present in the
+                       collection.
+
+
+</PRE>
+<H2>FILES</H2><PRE>
+       /tmp/krb5cc_[uid]  default  location  of  Kerberos  5 credentials cache
+                          ([uid] is the decimal UID of the user).
+
+       /etc/krb5.keytab   default location for the local host's <B>keytab</B> file.
+
+
+</PRE>
+<H2>SEE ALSO</H2><PRE>
+       <B>kinit(1)</B>, <B>kdestroy(1)</B>, <B>krb5(3)</B>
+
+
+
+                                                                      <B>KLIST(1)</B>
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>
