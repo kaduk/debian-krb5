@@ -1,8 +1,9 @@
 krb5 (1.10+dfsg~beta1-1) unstable; urgency=low
 
   * New Upstream version
+  * Fix hardening flags and pre-dpkg-buildflags support, Closes: #655248
 
- -- Sam Hartman <hartmans@debian.org>  Fri, 13 Jan 2012 16:41:21 -0500
+ -- Sam Hartman <hartmans@debian.org>  Fri, 13 Jan 2012 17:02:42 -0500
 
 krb5 (1.10+dfsg~alpha2-1) unstable; urgency=low
 

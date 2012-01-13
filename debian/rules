@@ -35,7 +35,7 @@ endif
 ifneq (,$(filter i486-linux-gnu x86_64-linux-gnu,$(DEB_HOST_GNU_TYPE)))
     CCOPTS +=-D_FORTIFY_SOURCE=2 -fstack-protector
     endif
-FLAGS=$(shell dpkg-buildflags --export=configure ||echo CFLAGS="$(CCOPTS)")
+FLAGS=$(shell if res=`dpkg-buildflags --export=configure `; then echo $res; elso echo   CFLAGS="$(CCOPTS)"; fi)
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
     NUMJOBS = -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
@@ -63,7 +63,7 @@ configure-stamp:
 		| xargs touch
 	[ ! -f $(DEB_HOST_GNU_TYPE).cache ] \
 		|| cp $(DEB_HOST_GNU_TYPE).cache build/
-	cd build && $(FLAGS) ../src/configure CPPFLAGS=" -D_REENTRANT" \
+	cd build && $(FLAGS) ../src/configure  \
 		--prefix=/usr --localstatedir=/etc --mandir=/usr/share/man \
 		--with-system-et --with-system-ss --disable-rpath  \
 		--enable-shared --with-ldap --without-tcl \
