@@ -350,7 +350,7 @@ libkrb5.so.3 libkrb5-3 #MINVER#
  krb5_generate_seq_number@krb5_3_MIT 1.6.dfsg.2
  krb5_generate_subkey@krb5_3_MIT 1.6.dfsg.2
  krb5_get_cred_via_tkt@krb5_3_MIT 1.6.dfsg.2
- krb5_get_credentials@krb5_3_MIT 1.7dfsg
+ krb5_get_credentials@krb5_3_MIT 1.10+dfsg~
  krb5_get_credentials_for_proxy@krb5_3_MIT 1.8+dfsg
  krb5_get_credentials_for_user@krb5_3_MIT 1.8+dfsg
  krb5_get_credentials_renew@krb5_3_MIT 1.6.dfsg.2
