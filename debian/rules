@@ -35,7 +35,7 @@ endif
 ifneq (,$(filter i486-linux-gnu x86_64-linux-gnu,$(DEB_HOST_GNU_TYPE)))
     CCOPTS +=-D_FORTIFY_SOURCE=2 -fstack-protector
     endif
-FLAGS=$(shell if res=`dpkg-buildflags --export=configure `; then echo $res; elso echo   CFLAGS="$(CCOPTS)"; fi)
+FLAGS=$(shell if res=`dpkg-buildflags --export=configure `; then echo $$res; else echo   CFLAGS="$(CCOPTS)"; fi)
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
     NUMJOBS = -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))

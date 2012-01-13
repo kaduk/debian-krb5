@@ -1,3 +1,9 @@
+krb5 (1.10+dfsg~beta1-2) unstable; urgency=low
+
+  * Oops, actually fix build flags, Closes: #655248
+
+ -- Sam Hartman <hartmans@debian.org>  Fri, 13 Jan 2012 17:39:34 -0500
+
 krb5 (1.10+dfsg~beta1-1) unstable; urgency=low
 
   * New Upstream version
