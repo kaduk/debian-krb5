@@ -9,3 +9,4 @@ time_locale
 0009-debian-suppress-usr-lib-in-krb5-config.patch
 debian-local/0010-debian-osconf.hin-path-changes.patch
 0011-Debian-.gbp.conf.patch
+0012-autoreconf.patch
