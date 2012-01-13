@@ -1,5 +1,5 @@
 debian-local/0001-debian-install-ldap-library-in-subdirectory.patch
-0002-Debian-manpage-patch.patch
+debian-local/0002-Debian-manpage-patch.patch
 ksu_environment_fix
 0004-Debian-HURD-compatibility.patch
 pkinit_libs
@@ -8,7 +8,4 @@ time_locale
 0008-Debian-set-AI_ADDRCONFIG-for-kprop-slave.patch
 0009-debian-suppress-usr-lib-in-krb5-config.patch
 debian-local/0010-debian-osconf.hin-path-changes.patch
-0011-autoreconf.patch
-0012-Debian-.gbp.conf.patch
-0013-ticket-7053.patch
-0014-ticket-6936.patch
+0011-Debian-.gbp.conf.patch

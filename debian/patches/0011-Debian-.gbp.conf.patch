@@ -1,4 +1,4 @@
-From d21f20c15242de16f31c5a6b9333ec9125a50506 Mon Sep 17 00:00:00 2001
+From ca13a70efdee63164d88b5e4471a3d510f7e0e6d Mon Sep 17 00:00:00 2001
 From: Sam Hartman <hartmans@debian.org>
 Date: Tue, 27 Dec 2011 05:27:08 -0500
 Subject: Debian: .gbp.conf

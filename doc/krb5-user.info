@@ -1356,7 +1356,7 @@ File: krb5-user.info,  Node: Copyright,  Prev: Kerberos Glossary,  Up: Top
 Appendix B Copyright
 ********************
 
-Copyright (C) 1985-2011 by the Massachusetts Institute of Technology.
+Copyright (C) 1985-2012 by the Massachusetts Institute of Technology.
 
 All rights reserved.
 
@@ -1366,17 +1366,21 @@ All rights reserved.
      contemplating export to obtain such a license before exporting.
 
 WITHIN THAT CONSTRAINT, permission to use, copy, modify, and distribute
-this software and its documentation for any purpose and without fee is
-hereby granted, provided that the above copyright notice appear in all
-copies and that both that copyright notice and this permission notice
-appear in supporting documentation, and that the name of M.I.T. not be
-used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  Furthermore if you
-modify this software you must label your software as modified software
-and not distribute it in such a fashion that it might be confused with
-the original MIT software.  M.I.T. makes no representations about the
+this software for any purpose and without fee is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation, and that the name of M.I.T. not be used in
+advertising or publicity pertaining to distribution of the software
+without specific, written prior permission.  Furthermore if you modify
+this software you must label your software as modified software and not
+distribute it in such a fashion that it might be confused with the
+original MIT software.  M.I.T. makes no representations about the
 suitability of this software for any purpose.  It is provided "as is"
 without express or implied warranty.
+
+Documentation components of this software distribution are licensed
+under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
+(`http://creativecommons.org/licenses/by-sa/3.0/')
 
 Individual source code files are copyright MIT, Cygnus Support, Novell,
 OpenVision Technologies, Oracle, Red Hat, Sun Microsystems,
@@ -2520,20 +2524,6 @@ The bundled libev source code is subject to the following license:
      the GPL in this and the other files of this package. If you do not
      delete the provisions above, a recipient may use your version of
      this file under either the BSD or the GPL.
-
-                          -------------------
-
-Permission is granted to make and distribute verbatim copies of this
-manual provided the copyright notices and this permission notice are
-preserved on all copies.
-
-Permission is granted to copy and distribute modified versions of this
-manual under the conditions for verbatim copying, provided also that the
-entire resulting derived work is distributed under the terms of a
-permission notice identical to this one.
-
-Permission is granted to copy and distribute translations of this manual
-into another language, under the above conditions for modified versions.
 
 
 

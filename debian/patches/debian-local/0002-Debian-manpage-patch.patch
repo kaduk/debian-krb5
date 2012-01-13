@@ -1,4 +1,4 @@
-From aa688bed7057f53c7135259c089325b7aa6126bf Mon Sep 17 00:00:00 2001
+From 44f7eb015bc518af80ac5a7f45a8a5c4c91a657d Mon Sep 17 00:00:00 2001
 From: Sam Hartman <hartmans@debian.org>
 Date: Mon, 26 Dec 2011 18:03:19 -0500
 Subject: Debian manpage patch
@@ -6,6 +6,8 @@ Subject: Debian manpage patch
 Adjust paths in manpages to be more consistent with FHS
 
 Remove edirectory support which is not built on Debian from LDAP man pages.
+
+Patch-Category: debian-local
 ---
  src/clients/kinit/kinit.M                       |    2 +-
  src/clients/ksu/ksu.M                           |   30 ++--
