@@ -113,3 +113,15 @@ index 7339d21..38f7253 100644
  int
  main(argc, argv)
      int argc;
+--- a/src/lib/gssapi/spnego/spnego_mech.c.orig	2012-04-26 00:51:36.000000000 +0200
++++ b/src/lib/gssapi/spnego/spnego_mech.c	2012-04-26 00:52:11.000000000 +0200
+@@ -69,6 +69,9 @@
+ #include	"gssapiP_spnego.h"
+ #include	<gssapi_err_generic.h>
+ 
++#ifndef MAXHOSTNAMELEN
++#define MAXHOSTNAMELEN 64
++#endif
+ 
+ #undef g_token_size
+ #undef g_verify_token_header

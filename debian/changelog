@@ -1,3 +1,10 @@
+krb5 (1.10+dfsg~beta1-2.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Apply patch from Svante Signell to fix FTBFS on hurd-i386, Closes: #657027.
+
+ -- Samuel Thibault <sthibault@debian.org>  Thu, 26 Apr 2012 00:52:37 +0200
+
 krb5 (1.10+dfsg~beta1-2) unstable; urgency=low
 
   * Oops, actually fix build flags, Closes: #655248
