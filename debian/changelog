@@ -1,3 +1,14 @@
+krb5 (1.10.1+dfsg-1) unstable; urgency=low
+
+  *  New Upstream Version
+  * Fix use counts on preauthentication, Closes: #670457
+  * Fix kadmin access controls, Closes: #670918
+  * Accept NMU with longer hostname, Closes: #657027
+  * Fix history from old databases, Closes: #660869
+  * Fix gcc 4.6.2 may be used uninitialized warnings/errors, Closes: #672075
+
+ -- Sam Hartman <hartmans@debian.org>  Tue, 08 May 2012 21:40:57 -0400
+
 krb5 (1.10+dfsg~beta1-2.1) unstable; urgency=low
 
   * Non-maintainer upload.
