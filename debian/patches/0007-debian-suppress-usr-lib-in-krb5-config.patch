@@ -1,0 +1,21 @@
+From a7347d1fac821e4a022fe8299c723ea00a041907 Mon Sep 17 00:00:00 2001
+From: Sam Hartman <hartmans@debian.org>
+Date: Mon, 26 Dec 2011 18:19:53 -0500
+Subject: debian: suppress /usr/lib in krb5-config
+
+---
+ src/krb5-config.in |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/src/krb5-config.in b/src/krb5-config.in
+index b476b4fdd2051e314aef2d7522380860f9fa4a0a..c2f0a05 100755
+--- a/src/krb5-config.in
++++ b/src/krb5-config.in
+@@ -117,6 +117,7 @@ if test -n "$do_help"; then
+     echo "        [--prefix]        Kerberos installed prefix"
+     echo "        [--exec-prefix]   Kerberos installed exec_prefix"
+     echo "        [--cflags]        Compile time CFLAGS"
++    echo "        [--deps]          Include dependent libraries"
+     echo "        [--libs]          List libraries required to link [LIBRARIES]"
+     echo "Libraries:"
+     echo "        krb5              Kerberos 5 application"

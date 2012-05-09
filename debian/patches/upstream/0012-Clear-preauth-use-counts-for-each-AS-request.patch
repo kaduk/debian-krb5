@@ -1,0 +1,33 @@
+From d2f1c25470dc1c483078d0accb8254b2bf2a1c5f Mon Sep 17 00:00:00 2001
+From: ghudson <ghudson@dc483132-0cff-0310-8789-dd5450dbe970>
+Date: Wed, 25 Apr 2012 17:20:20 +0000
+Subject: Clear preauth use counts for each AS request
+
+Initialize use_count fields in krb5_preauth_request_context_init,
+which is invoked before each AS request.  Previously they were
+initialized only in krb5_init_preauth_context, which is only invoked
+once per krb5 library context.
+
+ticket: 7119
+target_version: 1.10.2
+tags: pullup
+
+git-svn-id: svn://anonsvn.mit.edu/krb5/trunk@25822 dc483132-0cff-0310-8789-dd5450dbe970
+(cherry picked from commit fc00ade45e2bfb6bf9a9b3f8cdb8ebbf65e75f72)
+Patch-Category: upstream
+---
+ src/lib/krb5/krb/preauth2.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/src/lib/krb5/krb/preauth2.c b/src/lib/krb5/krb/preauth2.c
+index 0c8ead5..d43c20e 100644
+--- a/src/lib/krb5/krb/preauth2.c
++++ b/src/lib/krb5/krb/preauth2.c
+@@ -281,6 +281,7 @@ krb5_preauth_request_context_init(krb5_context context)
+     if (context->preauth_context == NULL)
+         return;
+     for (i = 0; i < context->preauth_context->n_modules; i++) {
++        context->preauth_context->modules[i].use_count = 0;
+         mod = &context->preauth_context->modules[i];
+         if (mod->client_req_init != NULL)
+             mod->client_req_init(context, mod->moddata, mod->modreq_p);

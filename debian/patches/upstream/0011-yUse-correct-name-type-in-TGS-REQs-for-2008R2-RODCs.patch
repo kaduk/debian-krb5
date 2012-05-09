@@ -1,0 +1,84 @@
+From 8524f8d6251b07905891ebc2409ee63c821176ca Mon Sep 17 00:00:00 2001
+From: tlyu <tlyu@dc483132-0cff-0310-8789-dd5450dbe970>
+Date: Fri, 27 Apr 2012 22:40:21 +0000
+Subject: yUse correct name-type in TGS-REQs for 2008R2 RODCs
+
+Correctly set the name-type for the TGS principals to KRB5_NT_SRV_INST
+in TGS-REQs.  (Previously, only AS-REQs had the name-type set in this
+way.)  Windows Server 2008 R2 read-only domain controllers (RODCs)
+insist on having the correct name-type for the TGS principal in
+TGS-REQs as well as AS-REQs, at least for the TGT-forwarding case.
+
+Thanks to Sebastian Galiano for reporting this bug and helping with
+testing.
+
+ticket: 7120
+target_version: 1.10.2
+tags: pullup
+
+git-svn-id: svn://anonsvn.mit.edu/krb5/trunk@25839 dc483132-0cff-0310-8789-dd5450dbe970
+(cherry picked from commit c87074d47185f2844780bc2c0f7eefeb1e3297e0)
+Patch-Category: upstream
+---
+ src/lib/krb5/krb/fwd_tgt.c |   12 ++++--------
+ src/lib/krb5/krb/tgtname.c |   19 +++++++++++++++----
+ 2 files changed, 19 insertions(+), 12 deletions(-)
+
+diff --git a/src/lib/krb5/krb/fwd_tgt.c b/src/lib/krb5/krb/fwd_tgt.c
+index d602952..8387cea 100644
+--- a/src/lib/krb5/krb/fwd_tgt.c
++++ b/src/lib/krb5/krb/fwd_tgt.c
+@@ -28,6 +28,7 @@
+ #ifdef HAVE_MEMORY_H
+ #include <memory.h>
+ #endif
++#include "int-proto.h"
+ 
+ /* helper function: convert flags to necessary KDC options */
+ #define flags2options(flags) (flags & KDC_TKT_COMMON_MASK)
+@@ -93,14 +94,9 @@ krb5_fwd_tgt_creds(krb5_context context, krb5_auth_context auth_context,
+     if ((retval = krb5_copy_principal(context, client, &creds.client)))
+         goto errout;
+ 
+-    if ((retval = krb5_build_principal_ext(context, &creds.server,
+-                                           client->realm.length,
+-                                           client->realm.data,
+-                                           KRB5_TGS_NAME_SIZE,
+-                                           KRB5_TGS_NAME,
+-                                           client->realm.length,
+-                                           client->realm.data,
+-                                           0)))
++    retval = krb5int_tgtname(context, &client->realm, &client->realm,
++                             &creds.server);
++    if (retval)
+         goto errout;
+ 
+     /* fetch tgt directly from cache */
+diff --git a/src/lib/krb5/krb/tgtname.c b/src/lib/krb5/krb/tgtname.c
+index 1a02880..1cd113a 100644
+--- a/src/lib/krb5/krb/tgtname.c
++++ b/src/lib/krb5/krb/tgtname.c
+@@ -30,8 +30,19 @@
+ krb5_error_code
+ krb5int_tgtname(krb5_context context, const krb5_data *server, const krb5_data *client, krb5_principal *tgtprinc)
+ {
+-    return krb5_build_principal_ext(context, tgtprinc, client->length, client->data,
+-                                    KRB5_TGS_NAME_SIZE, KRB5_TGS_NAME,
+-                                    server->length, server->data,
+-                                    0);
++    krb5_error_code ret;
++
++    ret = krb5_build_principal_ext(context, tgtprinc, client->length, client->data,
++                                   KRB5_TGS_NAME_SIZE, KRB5_TGS_NAME,
++                                   server->length, server->data,
++                                   0);
++    if (ret)
++        return ret;
++    /*
++     * Windows Server 2008 R2 RODC insists on TGS principal names having the
++     * right name type.
++     */
++    krb5_princ_type(context, *tgtprinc) = KRB5_NT_SRV_INST;
++
++    return ret;
+ }

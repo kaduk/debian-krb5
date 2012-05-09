@@ -1,4 +1,4 @@
-From 8612606c4838f2cab5995a5f8d8a0128591efa05 Mon Sep 17 00:00:00 2001
+From 1457573118f4f63df9dd2459a1948a5598f4e9fc Mon Sep 17 00:00:00 2001
 From: Sam Hartman <hartmans@debian.org>
 Date: Mon, 26 Dec 2011 18:11:42 -0500
 Subject: Debian: HURD compatibility
@@ -7,14 +7,15 @@ HURd has no MAXPATHLEN or MAXHOSTLEN.
 ---
  src/include/k5-int.h                        |    9 ++++++++-
  src/kadmin/ktutil/ktutil_funcs.c            |    4 ++++
+ src/lib/gssapi/spnego/spnego_mech.c         |    3 +++
  src/lib/krb5/os/kuserok.c                   |    4 ++++
  src/lib/krb5/os/sn2princ.c                  |    4 ++++
  src/plugins/kdb/db2/libdb2/include/db-int.h |    4 ++++
  src/tests/resolve/resolve.c                 |    4 ++++
- 6 files changed, 28 insertions(+), 1 deletions(-)
+ 7 files changed, 31 insertions(+), 1 deletions(-)
 
 diff --git a/src/include/k5-int.h b/src/include/k5-int.h
-index 12fbbc8..7286e0b 100644
+index 12fbbc82418895d0fb62eb21ea7e8f29b2c5ccef..7286e0b 100644
 --- a/src/include/k5-int.h
 +++ b/src/include/k5-int.h
 @@ -575,6 +575,9 @@ extern char *strdup (const char *);
@@ -41,7 +42,7 @@ index 12fbbc8..7286e0b 100644
  #ifdef KRB5_DNS_LOOKUP
  krb5_error_code
 diff --git a/src/kadmin/ktutil/ktutil_funcs.c b/src/kadmin/ktutil/ktutil_funcs.c
-index 20a348c..b8b61ce 100644
+index 20a348c805824a47173017a599e9a172df2e1b0d..b8b61ce 100644
 --- a/src/kadmin/ktutil/ktutil_funcs.c
 +++ b/src/kadmin/ktutil/ktutil_funcs.c
 @@ -33,6 +33,10 @@
@@ -55,8 +56,22 @@ index 20a348c..b8b61ce 100644
  /*
   * Free a kt_list
   */
+diff --git a/src/lib/gssapi/spnego/spnego_mech.c b/src/lib/gssapi/spnego/spnego_mech.c
+index 70246b6..babb310 100644
+--- a/src/lib/gssapi/spnego/spnego_mech.c
++++ b/src/lib/gssapi/spnego/spnego_mech.c
+@@ -69,6 +69,9 @@
+ #include	"gssapiP_spnego.h"
+ #include	<gssapi_err_generic.h>
+ 
++#ifndef MAXHOSTNAMELEN
++#define MAXHOSTNAMELEN 255
++#endif
+ 
+ #undef g_token_size
+ #undef g_verify_token_header
 diff --git a/src/lib/krb5/os/kuserok.c b/src/lib/krb5/os/kuserok.c
-index 51471ae..6941b1d 100644
+index 51471ae7ceb403e24c6e1cf0c3b6525fe54404ae..6941b1d 100644
 --- a/src/lib/krb5/os/kuserok.c
 +++ b/src/lib/krb5/os/kuserok.c
 @@ -37,6 +37,10 @@
@@ -71,7 +86,7 @@ index 51471ae..6941b1d 100644
  #include <hfs/hfs_mount.h>      /* XXX */
  #define FILE_OWNER_OK(UID)  ((UID) == 0 || (UID) == UNKNOWNUID)
 diff --git a/src/lib/krb5/os/sn2princ.c b/src/lib/krb5/os/sn2princ.c
-index 1bee5ae..3ad851f 100644
+index 1bee5ae81e2721198b3977a4c178f4756f0aba7f..3ad851f 100644
 --- a/src/lib/krb5/os/sn2princ.c
 +++ b/src/lib/krb5/os/sn2princ.c
 @@ -60,6 +60,10 @@ maybe_use_reverse_dns (krb5_context context, int defalt)
@@ -86,7 +101,7 @@ index 1bee5ae..3ad851f 100644
  krb5_sname_to_principal(krb5_context context, const char *hostname, const char *sname, krb5_int32 type, krb5_principal *ret_princ)
  {
 diff --git a/src/plugins/kdb/db2/libdb2/include/db-int.h b/src/plugins/kdb/db2/libdb2/include/db-int.h
-index 8329ee3..6efa363 100644
+index 8329ee3d05d18f5cf7ca76d9e23cc8a7b221b7a5..6efa36395ee1c42bee948d4270495c44ce0d83f4 100644
 --- a/src/plugins/kdb/db2/libdb2/include/db-int.h
 +++ b/src/plugins/kdb/db2/libdb2/include/db-int.h
 @@ -280,4 +280,8 @@ void	 __dbpanic __P((DB *dbp));
@@ -99,7 +114,7 @@ index 8329ee3..6efa363 100644
 +#endif
  #endif /* _DB_INT_H_ */
 diff --git a/src/tests/resolve/resolve.c b/src/tests/resolve/resolve.c
-index 7339d21..38f7253 100644
+index 7339d21bd9ac6f6d37891f73e5394992573aaeae..38f7253 100644
 --- a/src/tests/resolve/resolve.c
 +++ b/src/tests/resolve/resolve.c
 @@ -73,6 +73,10 @@ char *strchr();
@@ -113,15 +128,3 @@ index 7339d21..38f7253 100644
  int
  main(argc, argv)
      int argc;
---- a/src/lib/gssapi/spnego/spnego_mech.c.orig	2012-04-26 00:51:36.000000000 +0200
-+++ b/src/lib/gssapi/spnego/spnego_mech.c	2012-04-26 00:52:11.000000000 +0200
-@@ -69,6 +69,9 @@
- #include	"gssapiP_spnego.h"
- #include	<gssapi_err_generic.h>
- 
-+#ifndef MAXHOSTNAMELEN
-+#define MAXHOSTNAMELEN 64
-+#endif
- 
- #undef g_token_size
- #undef g_verify_token_header
