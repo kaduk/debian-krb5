@@ -1,0 +1,481 @@
+From a68712616e1cd542571bf93767ac6fe42cd713ee Mon Sep 17 00:00:00 2001
+From: ghudson <ghudson@dc483132-0cff-0310-8789-dd5450dbe970>
+Date: Thu, 3 May 2012 19:42:43 +0000
+Subject: Try all host keys by default in vfy_increds
+
+Factor out the core code of krb5_verify_init_creds into a helper, add
+new helper functions to retrieve the list of unique host principals
+from a keytab, and make krb5_verify_init_creds drive the helper once
+per host principal.
+
+Augment the test harness and test cases to better test the new
+behavior.  Add a k5test method to retrieve an NFS principal for the
+test realm for the sake of the new test cases.
+
+ticket: 7125
+
+git-svn-id: svn://anonsvn.mit.edu/krb5/trunk@25845 dc483132-0cff-0310-8789-dd5450dbe970
+(cherry picked from commit 2198b0504fdc84152a81fff3743c7d22c1f821dc)
+Patch-Category: upstream
+---
+ src/include/krb5/krb5.hin         |   31 +++---
+ src/lib/krb5/krb/t_vfy_increds.c  |   34 +++++--
+ src/lib/krb5/krb/t_vfy_increds.py |   55 +++++++++-
+ src/lib/krb5/krb/vfy_increds.c    |  205 +++++++++++++++++++++++++------------
+ src/util/k5test.py                |    4 +
+ 5 files changed, 239 insertions(+), 90 deletions(-)
+
+diff --git a/src/include/krb5/krb5.hin b/src/include/krb5/krb5.hin
+index 5f667cee21330de6fe59fcfaac8890fa022561bd..21bfdb4 100644
+--- a/src/include/krb5/krb5.hin
++++ b/src/include/krb5/krb5.hin
+@@ -7049,36 +7049,37 @@ krb5_verify_init_creds_opt_set_ap_req_nofail(krb5_verify_init_creds_opt * k5_vic
+  *
+  * @param [in]     context      Library context
+  * @param [in]     creds        Initial credentials to be verified
+- * @param [in]     server_arg   Server principal (or NULL)
+- * @param [in]     keytab_arg   Key table (NULL to use default keytab)
+- * @param [in,out] ccache_arg   Credential cache for fetched creds (or NULL)
++ * @param [in]     server       Server principal (or NULL)
++ * @param [in]     keytab       Key table (NULL to use default keytab)
++ * @param [in,out] ccache       Credential cache for fetched creds (or NULL)
+  * @param [in]     options      Verification options (NULL for default options)
+  *
+  * This function attempts to verify that @a creds were obtained from a KDC with
+- * knowledge of a key in @a keytab_arg.  If @a server_arg is provided, the
+- * highest-kvno key entry for that principal name is used to verify the
+- * credentials; otherwise, the highest-kvno key entry for the first principal
+- * listed in @a keytab_arg is used.
++ * knowledge of a key in @a keytab, or the default keytab if @a keytab is NULL.
++ * If @a server is provided, the highest-kvno key entry for that principal name
++ * is used to verify the credentials; otherwise, all unique "host" service
++ * principals in the keytab are tried.
+  *
+  * If the specified keytab does not exist, or is empty, or cannot be read, or
+- * does not contain an entry for @a server_arg, then credential verification
+- * may be skipped unless configuration demands that it succeed.  The caller can
++ * does not contain an entry for @a server, then credential verification may be
++ * skipped unless configuration demands that it succeed.  The caller can
+  * control this behavior by providing a verification options structure; see
+  * krb5_verify_init_creds_opt_init() and
+  * krb5_verify_init_creds_opt_set_ap_req_nofail().
+  *
+- * If @a ccache_arg is NULL, any additional credentials fetched during the
+- * verification process will be destroyed.  If @a ccache_arg points to NULL, a
++ * If @a ccache is NULL, any additional credentials fetched during the
++ * verification process will be destroyed.  If @a ccache points to NULL, a
+  * memory ccache will be created for the additional credentials and returned in
+- * @a ccache_arg.  If @a ccache_arg points to a valid credential cache handle,
+- * the additional credentials will be stored in that cache.
++ * @a ccache.  If @a ccache points to a valid credential cache handle, the
++ * additional credentials will be stored in that cache.
+  *
+  * @retval 0  Success; otherwise - Kerberos error codes
+  */
+ krb5_error_code KRB5_CALLCONV
+ krb5_verify_init_creds(krb5_context context, krb5_creds *creds,
+-                       krb5_principal server_arg, krb5_keytab keytab_arg,
+-                       krb5_ccache *ccache_arg, krb5_verify_init_creds_opt *options);
++                       krb5_principal server, krb5_keytab keytab,
++                       krb5_ccache *ccache,
++                       krb5_verify_init_creds_opt *options);
+ 
+ /**
+  * Get validated credentials from the KDC.
+diff --git a/src/lib/krb5/krb/t_vfy_increds.c b/src/lib/krb5/krb/t_vfy_increds.c
+index e5d6877..a128014 100644
+--- a/src/lib/krb5/krb/t_vfy_increds.c
++++ b/src/lib/krb5/krb/t_vfy_increds.c
+@@ -33,6 +33,15 @@
+ 
+ #include "k5-int.h"
+ 
++static void
++check(krb5_error_code code)
++{
++    if (code != 0) {
++        com_err("t_vfy_increds", code, NULL);
++        abort();
++    }
++}
++
+ int
+ main(int argc, char **argv)
+ {
+@@ -40,17 +49,28 @@ main(int argc, char **argv)
+     krb5_ccache ccache;
+     krb5_cc_cursor cursor;
+     krb5_creds creds;
++    krb5_principal princ = NULL;
++    krb5_verify_init_creds_opt opt;
++
++    check(krb5_init_context(&context));
+ 
+-    assert(krb5_init_context(&context) == 0);
++    krb5_verify_init_creds_opt_init(&opt);
++    argv++;
++    if (*argv != NULL && strcmp(*argv, "-n") == 0) {
++        argv++;
++        krb5_verify_init_creds_opt_set_ap_req_nofail(&opt, TRUE);
++    }
++    if (*argv != NULL)
++        check(krb5_parse_name(context, *argv, &princ));
+ 
+     /* Fetch the first credential from the default ccache. */
+-    assert(krb5_cc_default(context, &ccache) == 0);
+-    assert(krb5_cc_start_seq_get(context, ccache, &cursor) == 0);
+-    assert(krb5_cc_next_cred(context, ccache, &cursor, &creds) == 0);
+-    assert(krb5_cc_end_seq_get(context, ccache, &cursor) == 0);
+-    assert(krb5_cc_close(context, ccache) == 0);
++    check(krb5_cc_default(context, &ccache));
++    check(krb5_cc_start_seq_get(context, ccache, &cursor));
++    check(krb5_cc_next_cred(context, ccache, &cursor, &creds));
++    check(krb5_cc_end_seq_get(context, ccache, &cursor));
++    check(krb5_cc_close(context, ccache));
+ 
+-    if (krb5_verify_init_creds(context, &creds, NULL, NULL, NULL, NULL) != 0)
++    if (krb5_verify_init_creds(context, &creds, princ, NULL, NULL, &opt) != 0)
+         return 1;
+     return 0;
+ }
+diff --git a/src/lib/krb5/krb/t_vfy_increds.py b/src/lib/krb5/krb/t_vfy_increds.py
+index e302480..00e92e9 100644
+--- a/src/lib/krb5/krb/t_vfy_increds.py
++++ b/src/lib/krb5/krb/t_vfy_increds.py
+@@ -26,25 +26,72 @@ from k5test import *
+ 
+ realm = K5Realm(start_kadmind=False)
+ 
+-# Verify the default.
++# Verify the default test realm credentials with the default keytab.
+ realm.run_as_server(['./t_vfy_increds'])
++realm.run_as_server(['./t_vfy_increds', '-n'])
+ 
+ # Verify after updating the keytab (so the keytab contains an outdated
+ # version 1 key followed by an up-to-date version 2 key).
+ realm.run_kadminl('ktadd ' + realm.host_princ)
+ realm.run_as_server(['./t_vfy_increds'])
++realm.run_as_server(['./t_vfy_increds', '-n'])
+ 
+ # Bump the host key without updating the keytab and make sure that
+ # verification fails as we expect it to.
+ realm.run_kadminl('change_password -randkey ' + realm.host_princ)
+ realm.run_as_server(['./t_vfy_increds'], expected_code=1)
++realm.run_as_server(['./t_vfy_increds', '-n'], expected_code=1)
+ 
+-# Remove the keytab and verify again.  This should succeed because
+-# verify_ap_req_nofail is not set.
++# Simulate a system where the hostname has changed and the keytab
++# contains host service principals with a hostname that no longer
++# matches.  Verify after updating the keytab with a host service
++# principal that has hostname that doesn't match the host running the
++# test.  Verify should succeed, with or without nofail.
++realm.run_kadminl('addprinc -randkey host/wrong.hostname')
++realm.run_kadminl('ktadd host/wrong.hostname')
++realm.run_as_server(['./t_vfy_increds'])
++realm.run_as_server(['./t_vfy_increds', '-n'])
++
++# Remove the keytab and verify again.  This should succeed if nofail
++# is not set, and fail if it is set.
+ os.remove(realm.keytab)
+ realm.run_as_server(['./t_vfy_increds'])
++realm.run_as_server(['./t_vfy_increds', '-n'], expected_code=1)
++
++# Create an empty keytab file and verify again.  This simulates a
++# system where an admin ran "touch krb5.keytab" to work around a
++# Solaris Kerberos bug where krb5_kt_default() fails if the keytab
++# file doesn't exist.  Verification should succeed in nofail is not
++# set.  (An empty keytab file appears as corrupt to keytab calls,
++# causing a KRB5_KEYTAB_BADVNO error, so any tightening of the
++# krb5_verify_init_creds semantics needs to take this into account.)
++open(realm.keytab, 'w').close()
++realm.run_as_server(['./t_vfy_increds'])
++realm.run_as_server(['./t_vfy_increds', '-n'], expected_code=1)
++os.remove(realm.keytab)
++
++# Add an NFS service principal to keytab.  Verify should ignore it by
++# default (succeeding unless nofail is set), but should verify with it
++# when it is specifically requested.
++realm.run_kadminl('addprinc -randkey ' + realm.nfs_princ)
++realm.run_kadminl('ktadd ' + realm.nfs_princ)
++realm.run_as_server(['./t_vfy_increds'])
++realm.run_as_server(['./t_vfy_increds', '-n'], expected_code=1)
++realm.run_as_server(['./t_vfy_increds', realm.nfs_princ])
++realm.run_as_server(['./t_vfy_increds', '-n', realm.nfs_princ])
++
++# Invalidating the NFS keys in the keytab.  We should get the same
++# results with the default principal argument, but verification should
++# now fail if we request it specifically.
++realm.run_kadminl('change_password -randkey ' + realm.nfs_princ)
++realm.run_as_server(['./t_vfy_increds'])
++realm.run_as_server(['./t_vfy_increds', '-n'], expected_code=1)
++realm.run_as_server(['./t_vfy_increds', realm.nfs_princ], expected_code=1)
++realm.run_as_server(['./t_vfy_increds', '-n', realm.nfs_princ],
++                    expected_code=1)
+ 
+-# Try with verify_ap_req_nofail set and no keytab.  This should fail.
++# Spot-check that verify_ap_req_nofail works equivalently to the
++# programmatic nofail option.
+ realm.stop()
+ conf = { 'server' : { 'libdefaults' : { 'verify_ap_req_nofail' : 'true' } } }
+ realm = K5Realm(start_kadmind=False, krb5_conf=conf)
+diff --git a/src/lib/krb5/krb/vfy_increds.c b/src/lib/krb5/krb/vfy_increds.c
+index 207b309..bd993c2 100644
+--- a/src/lib/krb5/krb/vfy_increds.c
++++ b/src/lib/krb5/krb/vfy_increds.c
+@@ -69,77 +69,20 @@ cleanup:
+     return(code);
+ }
+ 
+-krb5_error_code KRB5_CALLCONV
+-krb5_verify_init_creds(krb5_context context,
+-                       krb5_creds *creds,
+-                       krb5_principal server_arg,
+-                       krb5_keytab keytab_arg,
+-                       krb5_ccache *ccache_arg,
+-                       krb5_verify_init_creds_opt *options)
++static krb5_error_code
++get_vfy_cred(krb5_context context, krb5_creds *creds, krb5_principal server,
++             krb5_keytab keytab, krb5_ccache *ccache_arg)
+ {
+     krb5_error_code ret;
+-    krb5_principal server;
+-    krb5_keytab keytab;
+     krb5_ccache ccache;
+-    krb5_keytab_entry kte;
+     krb5_creds in_creds, *out_creds;
+     krb5_auth_context authcon;
+     krb5_data ap_req;
+ 
+-    /* KRB5KDC_ERR_S_PRINCIPAL_UNKNOWN */
+-
+-    server = NULL;
+-    keytab = NULL;
+     ccache = NULL;
+     out_creds = NULL;
+     authcon = NULL;
+     ap_req.data = NULL;
+-
+-    if (keytab_arg) {
+-        keytab = keytab_arg;
+-    } else {
+-        if ((ret = krb5_kt_default(context, &keytab)))
+-            goto cleanup;
+-    }
+-
+-    if (server_arg) {
+-        ret = krb5_copy_principal(context, server_arg, &server);
+-        if (ret)
+-            goto cleanup;
+-    } else {
+-        /* Use a principal name from the keytab. */
+-        ret = k5_kt_get_principal(context, keytab, &server);
+-        if (ret) {
+-            /* There's no keytab, or it's empty, or we can't read it.
+-             * Allow this unless configuration demands verification. */
+-            if (!nofail(context, options, creds))
+-                ret = 0;
+-            goto cleanup;
+-        }
+-    }
+-
+-    /* first, check if the server is in the keytab.  If not, there's
+-       no reason to continue.  rd_req does all this, but there's
+-       no way to know that a given error is caused by a missing
+-       keytab or key, and not by some other problem. */
+-
+-    if (krb5_is_referral_realm(&server->realm)) {
+-        krb5_free_data_contents(context, &server->realm);
+-        ret = krb5_get_default_realm(context, &server->realm.data);
+-        if (ret) goto cleanup;
+-        server->realm.length = strlen(server->realm.data);
+-    }
+-
+-    if ((ret = krb5_kt_get_entry(context, keytab, server, 0, 0, &kte))) {
+-        /* this means there is no keying material.  This is ok, as long as
+-           it is not prohibited by the configuration */
+-        if (!nofail(context, options, creds))
+-            ret = 0;
+-        goto cleanup;
+-    }
+-
+-    krb5_kt_free_entry(context, &kte);
+-
+     /* If the creds are for the server principal, we're set, just do a mk_req.
+      * Otherwise, do a get_credentials first.
+      */
+@@ -229,10 +172,6 @@ krb5_verify_init_creds(krb5_context context,
+      */
+ 
+ cleanup:
+-    if ( server)
+-        krb5_free_principal(context, server);
+-    if (!keytab_arg && keytab)
+-        krb5_kt_close(context, keytab);
+     if (ccache)
+         krb5_cc_destroy(context, ccache);
+     if (out_creds)
+@@ -244,3 +183,141 @@ cleanup:
+ 
+     return(ret);
+ }
++
++/* Free the principals in plist and plist itself. */
++static void
++free_princ_list(krb5_context context, krb5_principal *plist)
++{
++    size_t i;
++
++    if (plist == NULL)
++        return;
++    for (i = 0; plist[i] != NULL; i++)
++        krb5_free_principal(context, plist[i]);
++    free(plist);
++}
++
++/* Add princ to plist if it isn't already there. */
++static krb5_error_code
++add_princ_list(krb5_context context, krb5_const_principal princ,
++               krb5_principal **plist)
++{
++    size_t i;
++    krb5_principal *newlist;
++
++    /* Check if princ is already in plist, and count the elements. */
++    for (i = 0; (*plist) != NULL && (*plist)[i] != NULL; i++) {
++        if (krb5_principal_compare(context, princ, (*plist)[i]))
++            return 0;
++    }
++
++    newlist = realloc(*plist, (i + 2) * sizeof(*newlist));
++    if (newlist == NULL)
++        return ENOMEM;
++    *plist = newlist;
++    newlist[i] = newlist[i + 1] = NULL; /* terminate the list */
++    return krb5_copy_principal(context, princ, &newlist[i]);
++}
++
++/* Return a list of all unique host service princs in keytab. */
++static krb5_error_code
++get_host_princs_from_keytab(krb5_context context, krb5_keytab keytab,
++                            krb5_principal **princ_list_out)
++{
++    krb5_error_code ret;
++    krb5_kt_cursor cursor;
++    krb5_keytab_entry kte;
++    krb5_principal *plist = NULL, p;
++
++    *princ_list_out = NULL;
++
++    ret = krb5_kt_start_seq_get(context, keytab, &cursor);
++    if (ret)
++        goto cleanup;
++
++    while ((ret = krb5_kt_next_entry(context, keytab, &kte, &cursor)) == 0) {
++        p = kte.principal;
++        if (p->length == 2 && data_eq_string(p->data[0], "host"))
++            ret = add_princ_list(context, p, &plist);
++        krb5_kt_free_entry(context, &kte);
++        if (ret)
++            break;
++    }
++    (void)krb5_kt_end_seq_get(context, keytab, &cursor);
++    if (ret == KRB5_KT_END)
++        ret = 0;
++    if (ret)
++        goto cleanup;
++
++    *princ_list_out = plist;
++    plist = NULL;
++
++cleanup:
++    free_princ_list(context, plist);
++    return ret;
++}
++
++krb5_error_code KRB5_CALLCONV
++krb5_verify_init_creds(krb5_context context, krb5_creds *creds,
++                       krb5_principal server, krb5_keytab keytab,
++                       krb5_ccache *ccache,
++                       krb5_verify_init_creds_opt *options)
++{
++    krb5_error_code ret;
++    krb5_principal *host_princs = NULL;
++    krb5_keytab defkeytab = NULL;
++    krb5_keytab_entry kte;
++    krb5_boolean have_keys = FALSE;
++    size_t i;
++
++    if (keytab == NULL) {
++        ret = krb5_kt_default(context, &defkeytab);
++        if (ret)
++            goto cleanup;
++        keytab = defkeytab;
++    }
++
++    if (server != NULL) {
++        /* Check if server exists in keytab first. */
++        ret = krb5_kt_get_entry(context, keytab, server, 0, 0, &kte);
++        if (ret)
++            goto cleanup;
++        krb5_kt_free_entry(context, &kte);
++        have_keys = TRUE;
++        ret = get_vfy_cred(context, creds, server, keytab, ccache);
++    } else {
++        /* Try using the host service principals from the keytab. */
++        if (keytab->ops->start_seq_get == NULL) {
++            ret = EINVAL;
++            goto cleanup;
++        }
++        ret = get_host_princs_from_keytab(context, keytab, &host_princs);
++        if (ret)
++            goto cleanup;
++        if (host_princs == NULL) {
++            ret = KRB5_KT_NOTFOUND;
++            goto cleanup;
++        }
++        have_keys = TRUE;
++
++        /* Try all host principals until one succeeds or they all fail. */
++        for (i = 0; host_princs[i] != NULL; i++) {
++            ret = get_vfy_cred(context, creds, host_princs[i], keytab, ccache);
++            if (ret == 0)
++                break;
++        }
++    }
++
++cleanup:
++    /* If we have no key to verify with, pretend to succeed unless
++     * configuration directs otherwise. */
++    if (!have_keys && !nofail(context, options, creds))
++        ret = 0;
++
++    if (defkeytab != NULL)
++        krb5_kt_close(context, defkeytab);
++    krb5_free_principal(context, server);
++    free_princ_list(context, host_princs);
++
++    return ret;
++}
+diff --git a/src/util/k5test.py b/src/util/k5test.py
+index f791287..f81bf3d 100644
+--- a/src/util/k5test.py
++++ b/src/util/k5test.py
+@@ -279,6 +279,9 @@ Scripts may use the following realm methods and attributes:
+ * realm.host_princ: The name of the host principal for this machine,
+   with realm.
+ 
++* realm.nfs_princ: The name of the nfs principal for this machine,
++  with realm.
++
+ * realm.krbtgt_princ: The name of the krbtgt principal for the realm.
+ 
+ * realm.keytab: A keytab file in realm.testdir.  Initially contains a
+@@ -683,6 +686,7 @@ class K5Realm(object):
+         self.user_princ = 'user@' + self.realm
+         self.admin_princ = 'user/admin@' + self.realm
+         self.host_princ = 'host/%s@%s' % (hostname, self.realm)
++        self.nfs_princ = 'nfs/%s@%s' % (hostname, self.realm)
+         self.krbtgt_princ = 'krbtgt/%s@%s' % (self.realm, self.realm)
+         self.keytab = os.path.join(self.testdir, 'keytab')
+         self.ccache = os.path.join(self.testdir, 'ccache')
