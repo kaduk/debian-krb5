@@ -8,8 +8,9 @@ krb5 (1.10.1+dfsg-1) unstable; urgency=low
   * Fix gcc 4.6.2 may be used uninitialized warnings/errors, Closes: #672075
   * Check all keys in keytab for verifying credentials, Possibly fixes:
     #669127
+  * Avoid multi-arch libpath in krb5-config, Closes: #642229
 
- -- Sam Hartman <hartmans@debian.org>  Thu, 10 May 2012 16:04:11 -0400
+ -- Sam Hartman <hartmans@debian.org>  Thu, 10 May 2012 16:16:38 -0400
 
 krb5 (1.10+dfsg~beta1-2.1) unstable; urgency=low
 
