@@ -73,13 +73,6 @@ check-pytests:: hist
 	$(RUNPYTEST) $(srcdir)/t_renprinc.py $(PYTESTFLAGS)
 	$(RUNPYTEST) $(srcdir)/t_cccol.py $(PYTESTFLAGS)
 	$(RUNPYTEST) $(srcdir)/t_stringattr.py $(PYTESTFLAGS)
-<<<<<<< HEAD
-=======
-	$(RUNPYTEST) $(srcdir)/t_crossrealm.py $(PYTESTFLAGS)
-	$(RUNPYTEST) $(srcdir)/t_skew.py $(PYTESTFLAGS)
-	$(RUNPYTEST) $(srcdir)/t_keytab.py $(PYTESTFLAGS)
-	$(RUNPYTEST) $(srcdir)/t_pwhist.py $(PYTESTFLAGS)
->>>>>>> db26c5f... Try all history keys to decrypt password history
 #	$(RUNPYTEST) $(srcdir)/kdc_realm/kdcref.py $(PYTESTFLAGS)
 
 clean::

@@ -1,4 +1,4 @@
-From c4c84589f50cddabdb894d4795c73ac74b6f70d3 Mon Sep 17 00:00:00 2001
+From 0ccf8ffcef6cdb00e8e8d714619a09727646f561 Mon Sep 17 00:00:00 2001
 From: ghudson <ghudson@dc483132-0cff-0310-8789-dd5450dbe970>
 Date: Thu, 22 Mar 2012 14:07:44 +0000
 Subject: =?UTF-8?q?Suppress=20some=20gcc=20uninitialized=20variable=20warnin?=
