@@ -66,6 +66,8 @@ krb5 (1.10+dfsg~alpha1-5) unstable; urgency=low
 
   * Add texinfo back to build depends: policy has been subverted by the
     evil forces of wishful thinking and forward progress
+  * Conflict: with libkrb53 again. The transition is over and we no longer
+    need that package.
 
  -- Sam Hartman <hartmans@debian.org>  Wed, 30 Nov 2011 09:09:55 -0500
 
