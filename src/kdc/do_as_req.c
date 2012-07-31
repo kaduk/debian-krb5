@@ -464,7 +464,7 @@ process_as_req(krb5_kdc_req *request, krb5_data *req_pkt,
     krb5_enctype useenctype;
     struct as_req_state *state;
 
-    state = malloc(sizeof(*state));
+    state = calloc(sizeof(*state), 1);
     if (!state) {
         (*respond)(arg, ENOMEM, NULL);
         return;
@@ -487,6 +487,7 @@ process_as_req(krb5_kdc_req *request, krb5_data *req_pkt,
     state->authtime = 0;
     state->c_flags = 0;
     state->req_pkt = req_pkt;
+    state->inner_body = NULL;
     state->rstate = NULL;
     state->sname = 0;
     state->cname = 0;
