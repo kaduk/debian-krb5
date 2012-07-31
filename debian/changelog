@@ -1,3 +1,11 @@
+krb5 (1.10.1+dfsg-2) unstable; urgency=high
+
+  * MITKRB5-SA-2012-001 [CVE-2012-1014 CVE-2012-1015] KDC frees
+    uninitialized pointers
+  * Break libgssglue1 << 0.2-2 for multiarch, Closes: #680612
+
+ -- Sam Hartman <hartmans@debian.org>  Tue, 31 Jul 2012 08:11:40 -0400
+
 krb5 (1.10.1+dfsg-1) unstable; urgency=low
 
   *  New Upstream Version
