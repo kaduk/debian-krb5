@@ -1,0 +1,105 @@
+From d8879aefa6d305a0a943805eacf701686c9a2f53 Mon Sep 17 00:00:00 2001
+From: Sam Hartman <hartmans@debian.org>
+Date: Tue, 31 Jul 2012 08:14:58 -0400
+Subject: MITKRB5-SA-2012-001
+
+MITKRB5-SA-2012-001
+
+MIT krb5 Security Advisory 2012-001
+Original release: YYYY-MM-DD
+Last update: YYYY-MM-DD
+
+Topic: KDC heap corruption and crash vulnerabilities
+
+CVE-2012-1015: KDC frees uninitialized pointer
+
+CVSSv2 Vector: AV:N/AC:M/Au:N/C:C/I:C/A:C/E:POC/RL:OF/RC:C
+
+CVSSv2 Base Score:      9.3
+
+Access Vector:          Network
+Access Complexity:      Medium
+Authentication:         None
+Confidentiality Impact: Complete
+Integrity Impact:       Complete
+Availability Impact:    Complete
+
+CVSSv2 Temporal Score:  7.3
+
+Exploitability:         Proof-of-Concept
+Remediation Level:      Official Fix
+Report Confidence:      Confirmed
+
+CVE-2012-1014: KDC dereferences uninitialized pointer
+
+CVSSv2 Vector: AV:N/AC:L/Au:N/C:P/I:P/A:C/E:POC/RL:OF/RC:C
+CVSSv2 Base Score:      9
+CVSSv2 Temporal Score:  7
+---
+ src/kdc/do_as_req.c       |    3 ++-
+ src/kdc/kdc_preauth.c     |    3 ++-
+ src/kdc/kdc_util.c        |    1 +
+ src/lib/kdb/kdb_default.c |    3 +++
+ 4 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/kdc/do_as_req.c b/src/kdc/do_as_req.c
+index 79bb645..b9e1416 100644
+--- a/src/kdc/do_as_req.c
++++ b/src/kdc/do_as_req.c
+@@ -464,7 +464,7 @@ process_as_req(krb5_kdc_req *request, krb5_data *req_pkt,
+     krb5_enctype useenctype;
+     struct as_req_state *state;
+ 
+-    state = malloc(sizeof(*state));
++    state = calloc(sizeof(*state), 1);
+     if (!state) {
+         (*respond)(arg, ENOMEM, NULL);
+         return;
+@@ -487,6 +487,7 @@ process_as_req(krb5_kdc_req *request, krb5_data *req_pkt,
+     state->authtime = 0;
+     state->c_flags = 0;
+     state->req_pkt = req_pkt;
++    state->inner_body = NULL;
+     state->rstate = NULL;
+     state->sname = 0;
+     state->cname = 0;
+diff --git a/src/kdc/kdc_preauth.c b/src/kdc/kdc_preauth.c
+index 9d8cb34..d4ece3f 100644
+--- a/src/kdc/kdc_preauth.c
++++ b/src/kdc/kdc_preauth.c
+@@ -1438,7 +1438,8 @@ etype_info_helper(krb5_context context, krb5_kdc_req *request,
+                 continue;
+ 
+             }
+-            if (request_contains_enctype(context, request, db_etype)) {
++            if (krb5_is_permitted_enctype(context, db_etype) &&
++                request_contains_enctype(context, request, db_etype)) {
+                 retval = _make_etype_info_entry(context, client->princ,
+                                                 client_key, db_etype,
+                                                 &entry[i], etype_info2);
+diff --git a/src/kdc/kdc_util.c b/src/kdc/kdc_util.c
+index a43b291e7e2292fcfcf23a03d443dfde781ee77c..94dad3a 100644
+--- a/src/kdc/kdc_util.c
++++ b/src/kdc/kdc_util.c
+@@ -2461,6 +2461,7 @@ kdc_handle_protected_negotiation(krb5_data *req_pkt, krb5_kdc_req *request,
+         return 0;
+     pa.magic = KV5M_PA_DATA;
+     pa.pa_type = KRB5_ENCPADATA_REQ_ENC_PA_REP;
++    memset(&checksum, 0, sizeof(checksum));
+     retval = krb5_c_make_checksum(kdc_context,0, reply_key,
+                                   KRB5_KEYUSAGE_AS_REQ, req_pkt, &checksum);
+     if (retval != 0)
+diff --git a/src/lib/kdb/kdb_default.c b/src/lib/kdb/kdb_default.c
+index c4bf92e..367c894 100644
+--- a/src/lib/kdb/kdb_default.c
++++ b/src/lib/kdb/kdb_default.c
+@@ -61,6 +61,9 @@ krb5_dbe_def_search_enctype(kcontext, dbentp, start, ktype, stype, kvno, kdatap)
+     krb5_boolean        saw_non_permitted = FALSE;
+ 
+     ret = 0;
++    if (ktype != -1 && !krb5_is_permitted_enctype(kcontext, ktype))
++        return KRB5_KDB_NO_PERMITTED_KEY;
++
+     if (kvno == -1 && stype == -1 && ktype == -1)
+         kvno = 0;
+ 
