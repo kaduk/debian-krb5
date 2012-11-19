@@ -829,8 +829,6 @@ freeMechList(void)
 			free(cf->mech);
 		if (cf->mech_ext != NULL && cf->freeMech)
 			free(cf->mech_ext);
-		if (cf->dl_handle != NULL)
-			(void) krb5int_close_plugin(cf->dl_handle);
 		free(cf);
 	}
 }
