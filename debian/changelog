@@ -1,3 +1,12 @@
+krb5 (1.10.1+dfsg-3) unstable; urgency=low
+
+  * Kadmind crash only triggered by admin users, cve-2012-1013, Closes:
+    #687647
+  * Don't unload GSS-API plugins to avoid crashing applications that use
+    GSS-API on systems with plugins installed, Closes: #693741
+
+ -- Sam Hartman <hartmans@debian.org>  Mon, 19 Nov 2012 17:35:04 -0500
+
 krb5 (1.10.1+dfsg-2) unstable; urgency=high
 
   * MITKRB5-SA-2012-001 [CVE-2012-1014 CVE-2012-1015] KDC frees
