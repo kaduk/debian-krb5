@@ -16,3 +16,5 @@ upstream/0015-Try-all-host-keys-by-default-in-vfy_increds.patch
 upstream/0016-ticket-7080.patch
 0017-MITKRB5-SA-2012-001.patch
 upstream/0018-Don-t-free-caller-s-principal-in-vfy_increds.patch
+upstream/0019-Null-pointer-deref-in-kadmind-CVE-2012-1013.patch
+0020-gssapi-never-unload-mechanisms.patch
