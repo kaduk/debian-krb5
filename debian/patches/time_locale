@@ -11,10 +11,10 @@ Patch-Name: time_locale
 ---
  src/clients/klist/klist.c   |    1 +
  src/kadmin/cli/ss_wrapper.c |    1 +
- 2 files changed, 2 insertions(+), 0 deletions(-)
+ 2 files changed, 2 insertions(+)
 
 diff --git a/src/clients/klist/klist.c b/src/clients/klist/klist.c
-index a9a917156f526e32b171de9be16356abbce9e4cd..f0d55e8 100644
+index a9a9171..f0d55e8 100644
 --- a/src/clients/klist/klist.c
 +++ b/src/clients/klist/klist.c
 @@ -119,6 +119,7 @@ main(argc, argv)
@@ -26,7 +26,7 @@ index a9a917156f526e32b171de9be16356abbce9e4cd..f0d55e8 100644
  
      name = NULL;
 diff --git a/src/kadmin/cli/ss_wrapper.c b/src/kadmin/cli/ss_wrapper.c
-index f86c215f0485df127f7d624df2afded46c2db33d..2608d8c 100644
+index f86c215..2608d8c 100644
 --- a/src/kadmin/cli/ss_wrapper.c
 +++ b/src/kadmin/cli/ss_wrapper.c
 @@ -40,6 +40,7 @@ main(int argc, char *argv[])

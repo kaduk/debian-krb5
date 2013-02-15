@@ -15,7 +15,7 @@ Patch-Category: debian-local
  src/config-files/krb5.conf.M                    |    4 +-
  src/kadmin/cli/kadmin.M                         |   10 +-
  src/kadmin/server/kadmind.M                     |    2 +-
- src/krb5-config.M                               |   23 ++--
+ src/krb5-config.M                               |   23 +--
  src/plugins/kdb/ldap/ldap_util/kdb5_ldap_util.M |  201 -----------------------
  src/slave/kprop.M                               |    4 +-
  src/slave/kpropd.M                              |   10 +-
@@ -23,7 +23,7 @@ Patch-Category: debian-local
  11 files changed, 47 insertions(+), 247 deletions(-)
 
 diff --git a/src/clients/kinit/kinit.M b/src/clients/kinit/kinit.M
-index 0a919c09f16ff7e09065e9a64de64346ad35041d..126794a 100644
+index 0a919c0..126794a 100644
 --- a/src/clients/kinit/kinit.M
 +++ b/src/clients/kinit/kinit.M
 @@ -70,7 +70,7 @@ must be followed immediately by one of the following delimiters:
@@ -36,7 +36,7 @@ index 0a919c09f16ff7e09065e9a64de64346ad35041d..126794a 100644
  .sp
  If the
 diff --git a/src/clients/ksu/ksu.M b/src/clients/ksu/ksu.M
-index 00e000847a4815d63cc601fd9dfe744f2a0999f9..905a342 100644
+index 00e0008..905a342 100644
 --- a/src/clients/ksu/ksu.M
 +++ b/src/clients/ksu/ksu.M
 @@ -175,28 +175,28 @@ of just exec, as done by su.
@@ -141,7 +141,7 @@ index 00e000847a4815d63cc601fd9dfe744f2a0999f9..905a342 100644
  PERMISSIONS FOR KSU
  ksu should be owned by root and have the set user id  bit turned on.   
 diff --git a/src/config-files/kdc.conf.M b/src/config-files/kdc.conf.M
-index b47c25168f2a033e922a089bd5b4478fd2a6981a..8c83d27 100644
+index b47c251..8c83d27 100644
 --- a/src/config-files/kdc.conf.M
 +++ b/src/config-files/kdc.conf.M
 @@ -92,14 +92,14 @@ This
@@ -171,7 +171,7 @@ index b47c25168f2a033e922a089bd5b4478fd2a6981a..8c83d27 100644
  .SH SEE ALSO
  krb5.conf(5), krb5kdc(8)
 diff --git a/src/config-files/krb5.conf.M b/src/config-files/krb5.conf.M
-index af4200c3ba22a75b1fbcf7b83c153b084645431d..13b00cb 100644
+index af4200c..13b00cb 100644
 --- a/src/config-files/krb5.conf.M
 +++ b/src/config-files/krb5.conf.M
 @@ -522,7 +522,7 @@ is specified, the default is AUTH.
@@ -193,7 +193,7 @@ index af4200c3ba22a75b1fbcf7b83c153b084645431d..13b00cb 100644
  .in -1i
  .fi
 diff --git a/src/kadmin/cli/kadmin.M b/src/kadmin/cli/kadmin.M
-index b05007a53cd5a2c198d4bcc3e473de668c19ed1c..0331bbc 100644
+index b05007a..0331bbc 100644
 --- a/src/kadmin/cli/kadmin.M
 +++ b/src/kadmin/cli/kadmin.M
 @@ -290,7 +290,7 @@ explicitly set the key version number.
@@ -242,7 +242,7 @@ index b05007a53cd5a2c198d4bcc3e473de668c19ed1c..0331bbc 100644
  	from keytab WRFILE:/usr/local/var/krb5kdc/kadmind.keytab.
  kadmin:
 diff --git a/src/kadmin/server/kadmind.M b/src/kadmin/server/kadmind.M
-index d54b7c2151213970bcec30fc425fcbba46be414f..4f87788 100644
+index d54b7c2..4f87788 100644
 --- a/src/kadmin/server/kadmind.M
 +++ b/src/kadmin/server/kadmind.M
 @@ -111,7 +111,7 @@ and for which the appropriate principals are in its keytab.
@@ -255,7 +255,7 @@ index d54b7c2151213970bcec30fc425fcbba46be414f..4f87788 100644
  .B \-nofork
  specifies that the server does not put itself in the background and does
 diff --git a/src/krb5-config.M b/src/krb5-config.M
-index 56661aee7ed01d63b1999880163916f80e89e4b7..2fdffaa7f9cec347db5eb72744f5f130a1e7edcc 100644
+index 56661ae..2fdffaa 100644
 --- a/src/krb5-config.M
 +++ b/src/krb5-config.M
 @@ -26,37 +26,38 @@
@@ -309,7 +309,7 @@ index 56661aee7ed01d63b1999880163916f80e89e4b7..2fdffaa7f9cec347db5eb72744f5f130
  values for \fIlibraries\fP are:
  .sp
 diff --git a/src/plugins/kdb/ldap/ldap_util/kdb5_ldap_util.M b/src/plugins/kdb/ldap/ldap_util/kdb5_ldap_util.M
-index 484c4ce886bae0f8ad35e00038154de080fa18a7..979c617 100644
+index 484c4ce..979c617 100644
 --- a/src/plugins/kdb/ldap/ldap_util/kdb5_ldap_util.M
 +++ b/src/plugins/kdb/ldap/ldap_util/kdb5_ldap_util.M
 @@ -733,206 +733,5 @@ userpolicy
@@ -520,7 +520,7 @@ index 484c4ce886bae0f8ad35e00038154de080fa18a7..979c617 100644
  .SH SEE ALSO
  kadmin(8)
 diff --git a/src/slave/kprop.M b/src/slave/kprop.M
-index cb4ae5667f7f28282c45ae116a8708ebe71e89f6..3a9ea85 100644
+index cb4ae56..3a9ea85 100644
 --- a/src/slave/kprop.M
 +++ b/src/slave/kprop.M
 @@ -39,7 +39,7 @@ Kerberos server to a slave Kerberos server, which is specified by
@@ -542,7 +542,7 @@ index cb4ae5667f7f28282c45ae116a8708ebe71e89f6..3a9ea85 100644
  \fB\-P\fP \fIport\fP
  specifies the port to use to contact the
 diff --git a/src/slave/kpropd.M b/src/slave/kpropd.M
-index f3283c46b6106f727d09c492b55f0839d19bd271..4284048 100644
+index f3283c4..4284048 100644
 --- a/src/slave/kpropd.M
 +++ b/src/slave/kpropd.M
 @@ -74,7 +74,7 @@ Normally, kpropd is invoked out of
@@ -588,7 +588,7 @@ index f3283c46b6106f727d09c492b55f0839d19bd271..4284048 100644
  local machine will allow Kerberos database propagation via kprop.
  .SH SEE ALSO
 diff --git a/src/slave/kproplog.M b/src/slave/kproplog.M
-index b7081a9562fadaa70449b5dfeae6bc5dccd59ee7..778d0011ca5599b1c378d6898e6b2521ed596cea 100644
+index b7081a9..778d001 100644
 --- a/src/slave/kproplog.M
 +++ b/src/slave/kproplog.M
 @@ -24,7 +24,7 @@

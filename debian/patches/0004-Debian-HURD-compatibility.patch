@@ -12,10 +12,10 @@ HURd has no MAXPATHLEN or MAXHOSTLEN.
  src/lib/krb5/os/sn2princ.c                  |    4 ++++
  src/plugins/kdb/db2/libdb2/include/db-int.h |    4 ++++
  src/tests/resolve/resolve.c                 |    4 ++++
- 7 files changed, 31 insertions(+), 1 deletions(-)
+ 7 files changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/src/include/k5-int.h b/src/include/k5-int.h
-index 12fbbc82418895d0fb62eb21ea7e8f29b2c5ccef..7286e0b 100644
+index 12fbbc8..7286e0b 100644
 --- a/src/include/k5-int.h
 +++ b/src/include/k5-int.h
 @@ -575,6 +575,9 @@ extern char *strdup (const char *);
@@ -42,7 +42,7 @@ index 12fbbc82418895d0fb62eb21ea7e8f29b2c5ccef..7286e0b 100644
  #ifdef KRB5_DNS_LOOKUP
  krb5_error_code
 diff --git a/src/kadmin/ktutil/ktutil_funcs.c b/src/kadmin/ktutil/ktutil_funcs.c
-index 20a348c805824a47173017a599e9a172df2e1b0d..b8b61ce 100644
+index 20a348c..b8b61ce 100644
 --- a/src/kadmin/ktutil/ktutil_funcs.c
 +++ b/src/kadmin/ktutil/ktutil_funcs.c
 @@ -33,6 +33,10 @@
@@ -71,7 +71,7 @@ index 70246b6..babb310 100644
  #undef g_token_size
  #undef g_verify_token_header
 diff --git a/src/lib/krb5/os/kuserok.c b/src/lib/krb5/os/kuserok.c
-index 51471ae7ceb403e24c6e1cf0c3b6525fe54404ae..6941b1d 100644
+index 51471ae..6941b1d 100644
 --- a/src/lib/krb5/os/kuserok.c
 +++ b/src/lib/krb5/os/kuserok.c
 @@ -37,6 +37,10 @@
@@ -86,7 +86,7 @@ index 51471ae7ceb403e24c6e1cf0c3b6525fe54404ae..6941b1d 100644
  #include <hfs/hfs_mount.h>      /* XXX */
  #define FILE_OWNER_OK(UID)  ((UID) == 0 || (UID) == UNKNOWNUID)
 diff --git a/src/lib/krb5/os/sn2princ.c b/src/lib/krb5/os/sn2princ.c
-index 1bee5ae81e2721198b3977a4c178f4756f0aba7f..3ad851f 100644
+index 1bee5ae..3ad851f 100644
 --- a/src/lib/krb5/os/sn2princ.c
 +++ b/src/lib/krb5/os/sn2princ.c
 @@ -60,6 +60,10 @@ maybe_use_reverse_dns (krb5_context context, int defalt)
@@ -101,7 +101,7 @@ index 1bee5ae81e2721198b3977a4c178f4756f0aba7f..3ad851f 100644
  krb5_sname_to_principal(krb5_context context, const char *hostname, const char *sname, krb5_int32 type, krb5_principal *ret_princ)
  {
 diff --git a/src/plugins/kdb/db2/libdb2/include/db-int.h b/src/plugins/kdb/db2/libdb2/include/db-int.h
-index 8329ee3d05d18f5cf7ca76d9e23cc8a7b221b7a5..6efa36395ee1c42bee948d4270495c44ce0d83f4 100644
+index 8329ee3..6efa363 100644
 --- a/src/plugins/kdb/db2/libdb2/include/db-int.h
 +++ b/src/plugins/kdb/db2/libdb2/include/db-int.h
 @@ -280,4 +280,8 @@ void	 __dbpanic __P((DB *dbp));
@@ -114,7 +114,7 @@ index 8329ee3d05d18f5cf7ca76d9e23cc8a7b221b7a5..6efa36395ee1c42bee948d4270495c44
 +#endif
  #endif /* _DB_INT_H_ */
 diff --git a/src/tests/resolve/resolve.c b/src/tests/resolve/resolve.c
-index 7339d21bd9ac6f6d37891f73e5394992573aaeae..38f7253 100644
+index 7339d21..38f7253 100644
 --- a/src/tests/resolve/resolve.c
 +++ b/src/tests/resolve/resolve.c
 @@ -73,6 +73,10 @@ char *strchr();

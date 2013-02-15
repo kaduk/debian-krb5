@@ -78,7 +78,7 @@ index 9d8cb34..d4ece3f 100644
                                                  client_key, db_etype,
                                                  &entry[i], etype_info2);
 diff --git a/src/kdc/kdc_util.c b/src/kdc/kdc_util.c
-index a43b291e7e2292fcfcf23a03d443dfde781ee77c..94dad3a 100644
+index a43b291..94dad3a 100644
 --- a/src/kdc/kdc_util.c
 +++ b/src/kdc/kdc_util.c
 @@ -2461,6 +2461,7 @@ kdc_handle_protected_negotiation(krb5_data *req_pkt, krb5_kdc_req *request,

@@ -19,14 +19,14 @@ git-svn-id: svn://anonsvn.mit.edu/krb5/trunk@25845 dc483132-0cff-0310-8789-dd545
 Patch-Category: upstream
 ---
  src/include/krb5/krb5.hin         |   31 +++---
- src/lib/krb5/krb/t_vfy_increds.c  |   34 +++++--
+ src/lib/krb5/krb/t_vfy_increds.c  |   34 ++++--
  src/lib/krb5/krb/t_vfy_increds.py |   55 +++++++++-
  src/lib/krb5/krb/vfy_increds.c    |  205 +++++++++++++++++++++++++------------
  src/util/k5test.py                |    4 +
  5 files changed, 239 insertions(+), 90 deletions(-)
 
 diff --git a/src/include/krb5/krb5.hin b/src/include/krb5/krb5.hin
-index 5f667cee21330de6fe59fcfaac8890fa022561bd..21bfdb4 100644
+index 5f667ce..21bfdb4 100644
 --- a/src/include/krb5/krb5.hin
 +++ b/src/include/krb5/krb5.hin
 @@ -7049,36 +7049,37 @@ krb5_verify_init_creds_opt_set_ap_req_nofail(krb5_verify_init_creds_opt * k5_vic

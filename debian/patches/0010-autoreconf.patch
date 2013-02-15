@@ -5,7 +5,7 @@ Subject: autoreconf
 
 ---
  src/configure |  494 ++++++++++++++++++++++++++++-----------------------------
- 1 files changed, 245 insertions(+), 249 deletions(-)
+ 1 file changed, 245 insertions(+), 249 deletions(-)
 
 diff --git a/src/configure b/src/configure
 index 2d7acbb..1a7a02b 100755

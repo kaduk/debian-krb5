@@ -17,7 +17,7 @@ git-svn-id: svn://anonsvn.mit.edu/krb5/trunk@25822 dc483132-0cff-0310-8789-dd545
 Patch-Category: upstream
 ---
  src/lib/krb5/krb/preauth2.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ 1 file changed, 1 insertion(+)
 
 diff --git a/src/lib/krb5/krb/preauth2.c b/src/lib/krb5/krb/preauth2.c
 index 0c8ead5..d43c20e 100644

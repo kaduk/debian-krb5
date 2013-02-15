@@ -12,7 +12,7 @@ Patch-Category: debian-local
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/plugins/kdb/ldap/Makefile.in b/src/plugins/kdb/ldap/Makefile.in
-index 8232ccdee99a6b7abc233f05ec5f686154e0991b..6630c5b 100644
+index 8232ccd..6630c5b 100644
 --- a/src/plugins/kdb/ldap/Makefile.in
 +++ b/src/plugins/kdb/ldap/Makefile.in
 @@ -26,7 +26,7 @@ SHLIB_EXPDEPS = \
@@ -25,7 +25,7 @@ index 8232ccdee99a6b7abc233f05ec5f686154e0991b..6630c5b 100644
  
  SRCS= 	$(srcdir)/ldap_exp.c
 diff --git a/src/plugins/kdb/ldap/ldap_util/Makefile.in b/src/plugins/kdb/ldap/ldap_util/Makefile.in
-index 33f3b157a0b306bfdadfad319eb3ab2e2039c018..da87360 100644
+index 33f3b15..da87360 100644
 --- a/src/plugins/kdb/ldap/ldap_util/Makefile.in
 +++ b/src/plugins/kdb/ldap/ldap_util/Makefile.in
 @@ -3,7 +3,7 @@ BUILDTOP=$(REL)..$(S)..$(S)..$(S)..

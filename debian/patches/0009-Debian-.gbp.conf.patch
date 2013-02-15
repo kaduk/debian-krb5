@@ -5,12 +5,12 @@ Subject: Debian: .gbp.conf
 
 ---
  .gbp.conf |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ 1 file changed, 5 insertions(+)
  create mode 100644 .gbp.conf
 
 diff --git a/.gbp.conf b/.gbp.conf
 new file mode 100644
-index 0000000..4bf1754f1a004b5e36048ebeb8777c08943de58b
+index 0000000..4bf1754
 --- /dev/null
 +++ b/.gbp.conf
 @@ -0,0 +1,5 @@

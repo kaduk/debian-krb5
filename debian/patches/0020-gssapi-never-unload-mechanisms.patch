@@ -15,7 +15,7 @@ is never reclaimed.
 ticket: 7135
 ---
  src/lib/gssapi/mechglue/g_initialize.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ 1 file changed, 2 deletions(-)
 
 diff --git a/src/lib/gssapi/mechglue/g_initialize.c b/src/lib/gssapi/mechglue/g_initialize.c
 index 202ad8e..9cb84b0 100644

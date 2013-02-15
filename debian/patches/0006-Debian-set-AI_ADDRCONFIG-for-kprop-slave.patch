@@ -5,10 +5,10 @@ Subject: Debian: set AI_ADDRCONFIG for kprop slave
 
 ---
  src/slave/kprop.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ 1 file changed, 1 insertion(+)
 
 diff --git a/src/slave/kprop.c b/src/slave/kprop.c
-index 473f9f23a637d15680b928294a1463793f20d34c..6fbfc1e 100644
+index 473f9f2..6fbfc1e 100644
 --- a/src/slave/kprop.c
 +++ b/src/slave/kprop.c
 @@ -321,6 +321,7 @@ open_connection(krb5_context context, char *host, int *fd)

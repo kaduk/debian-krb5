@@ -1,3 +1,9 @@
+krb5 (1.10.1+dfsg-4) unstable; urgency=high
+
+  * KDC null pointer dereference with PKINIT, CVE-2013-1415
+
+ -- Benjamin Kaduk <kaduk@mit.edu>  Fri, 15 Feb 2013 16:07:53 -0500
+
 krb5 (1.10.1+dfsg-3) unstable; urgency=low
 
   * Kadmind crash only triggered by admin users, cve-2012-1013, Closes:
