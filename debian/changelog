@@ -1,3 +1,11 @@
+krb5 (1.10.1+dfsg-4+nmu1) unstable; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix cve-2013-1016: null pointer derefence when handling a draft9 request
+    (closes: #702633).
+
+ -- Michael Gilbert <mgilbert@debian.org>  Fri, 15 Mar 2013 04:15:27 +0000
+
 krb5 (1.10.1+dfsg-4) unstable; urgency=high
 
   * KDC null pointer dereference with PKINIT, CVE-2013-1415
