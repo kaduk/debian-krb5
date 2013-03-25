@@ -1017,8 +1017,8 @@ pkinit_server_return_padata(krb5_context context,
         (rep != NULL && rep->choice == choice_pa_pk_as_rep_dhInfo)) {
 
         /* If mutually supported KDFs were found, use the alg agility KDF */
-        if (rep->u.dh_Info.kdfID) {
-            secret.data = server_key;
+        if (rep != NULL && rep->u.dh_Info.kdfID) {
+            secret.data = (char *)server_key;
             secret.length = server_key_len;
 
             retval = pkinit_alg_agility_kdf(context, &secret,
