@@ -19,5 +19,5 @@ upstream/0018-Don-t-free-caller-s-principal-in-vfy_increds.patch
 upstream/0019-Null-pointer-deref-in-kadmind-CVE-2012-1013.patch
 0020-gssapi-never-unload-mechanisms.patch
 0021-PKINIT-null-pointer-deref-CVE-2013-1415.patch
-0022-CVE-patch-from-krb5-1.10.1-dfsg-4-nmu1.patch
+0022-cve-2012-1016
 0023-Work-around-getaddrinfo-bug.patch
