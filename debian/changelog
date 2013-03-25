@@ -1,10 +1,16 @@
+krb5 (1.10.1+dfsg-6) unstable; urgency=low
+
+  * Fix klist date display for UTF-8 US locales, Closes: #697954
+
+ -- Benjamin Kaduk <kaduk@mit.edu>  Mon, 25 Mar 2013 12:39:02 -0400
+
 krb5 (1.10.1+dfsg-5) unstable; urgency=low
 
   * Import workaround for getaddrinfo bug from upstream.  Described in
     upstream's RT 7124, addresses the main concern of #697662
   * Correct CVE number for CVE-2012-1016 in changelog and patches
 
- -- Benjamin Kaduk <kaduk@mit.edu>  Mon, 25 Mar 2013 11:50:07 -0400
+ -- Benjamin Kaduk <kaduk@mit.edu>  Mon, 25 Mar 2013 12:03:10 -0400
 
 krb5 (1.10.1+dfsg-4+nmu1) unstable; urgency=high
 

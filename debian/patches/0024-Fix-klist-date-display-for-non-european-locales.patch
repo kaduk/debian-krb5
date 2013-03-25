@@ -1,0 +1,32 @@
+From 320f97d8064a72c047c5d4f8157722e95ad6af06 Mon Sep 17 00:00:00 2001
+From: Benjamin Kaduk <kaduk@mit.edu>
+Date: Mon, 25 Mar 2013 12:00:05 -0400
+Subject: Fix klist date display for non-european locales
+
+Debian patches from #138430 enabled localization for times in the klist
+utility, but length checks on the resulting output string caused many US
+locales to fall back to a European date order, causing confusion.
+Take upstream revision e8e34ead59 which uses a different set of format
+strings that is much less likely to require the hardcoded fallback.
+---
+ src/lib/krb5/krb/str_conv.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/lib/krb5/krb/str_conv.c b/src/lib/krb5/krb/str_conv.c
+index 21e7fd9..65f403a 100644
+--- a/src/lib/krb5/krb/str_conv.c
++++ b/src/lib/krb5/krb/str_conv.c
+@@ -242,7 +242,12 @@ krb5_timestamp_to_sfstring(krb5_timestamp timestamp, char *buffer, size_t buflen
+         "%c",                   /* Default locale-dependent date and time */
+         "%d %b %Y %T",          /* dd mon yyyy hh:mm:ss                 */
+         "%x %X",                /* locale-dependent short format        */
+-        "%d/%m/%Y %R"           /* dd/mm/yyyy hh:mm                     */
++        "%x %T",                /* locale-dependent date + hh:mm:ss     */
++        "%x %R",                /* locale-dependent date + hh:mm        */
++        "%Y-%m-%dT%H:%M:%S",    /* ISO 8601 date + time                 */
++        "%Y-%m-%dT%H:%M",       /* ISO 8601 date + hh:mm                */
++        "%Y%m%d%H%M%S",         /* ISO 8601 date + time, basic          */
++        "%Y%m%d%H%M"            /* ISO 8601 date + hh:mm, basic         */
+     };
+     static const unsigned int sftime_format_table_nents =
+         sizeof(sftime_format_table)/sizeof(sftime_format_table[0]);
