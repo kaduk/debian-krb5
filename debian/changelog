@@ -2,13 +2,14 @@ krb5 (1.10.1+dfsg-5) unstable; urgency=low
 
   * Import workaround for getaddrinfo bug from upstream.  Described in
     upstream's RT 7124, addresses the main concern of #697662
+  * Correct CVE number for CVE-2012-1016 in changelog and patches
 
  -- Benjamin Kaduk <kaduk@mit.edu>  Mon, 25 Mar 2013 11:50:07 -0400
 
 krb5 (1.10.1+dfsg-4+nmu1) unstable; urgency=high
 
   * Non-maintainer upload by the Security Team.
-  * Fix cve-2013-1016: null pointer derefence when handling a draft9 request
+  * Fix cve-2012-1016: null pointer derefence when handling a draft9 request
     (closes: #702633).
 
  -- Michael Gilbert <mgilbert@debian.org>  Fri, 15 Mar 2013 04:15:27 +0000
