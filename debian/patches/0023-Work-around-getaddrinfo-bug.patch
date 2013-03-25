@@ -1,0 +1,25 @@
+From 3e59a451935a8d17c313083db7ae29a3813e2b99 Mon Sep 17 00:00:00 2001
+From: Benjamin Kaduk <kaduk@mit.edu>
+Date: Mon, 25 Mar 2013 11:31:43 -0400
+Subject: Work around getaddrinfo bug
+
+Per upstream ticket #7124, avoid getting PTR lookups when they are
+not requested.  This addresses part of #697662.
+This is upstream's revision c3ab5fe0b.
+---
+ src/lib/krb5/os/sn2princ.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/lib/krb5/os/sn2princ.c b/src/lib/krb5/os/sn2princ.c
+index 3ad851f..a71e572 100644
+--- a/src/lib/krb5/os/sn2princ.c
++++ b/src/lib/krb5/os/sn2princ.c
+@@ -109,7 +109,7 @@ krb5_sname_to_principal(krb5_context context, const char *hostname, const char *
+                hostnames associated.  */
+ 
+             memset(&hints, 0, sizeof(hints));
+-            hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
++            hints.ai_flags = AI_CANONNAME;
+             err = getaddrinfo(hostname, 0, &hints, &ai);
+             if (err) {
+ #ifdef DEBUG_REFERRALS
